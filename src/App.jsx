@@ -230,10 +230,10 @@ const HomePage = ({ setActiveTab }) => (
         What is the BBH?
       </h2>
       <p style={{ fontSize: 16, color: "#52525B", lineHeight: 1.8, fontFamily: "'Inter', sans-serif", maxWidth: 680 }}>
-        The BUAI Builder Hub (BBH) is a collaborative space where students build AI agents and
-        tools in a safe, controlled testing environment — designed to complement classroom
-        learning with hands-on, portfolio-ready experience. BBH draws its students from two
-        undergraduate AI communities at USC Marshall:{" "}
+        The BUAI Builder Hub (BBH) builds AI tools that improve the USC community. Our projects
+        complement classroom learning with hands-on, portfolio-ready experience, and every team
+        works alongside faculty mentors. BBH draws its students from two undergraduate AI
+        communities at USC Marshall:{" "}
         <a href="https://www.marshall.usc.edu/programs/undergraduate-programs/undergraduate-degrees/bs-artificial-intelligence-for-business-buai" target="_blank" rel="noopener noreferrer" style={{ color: "#990000", fontWeight: 600, textDecoration: "none" }}>
           BUAI
         </a>{" "}
@@ -241,20 +241,17 @@ const HomePage = ({ setActiveTab }) => (
         <a href="https://www.uscmaia.com/" target="_blank" rel="noopener noreferrer" style={{ color: "#990000", fontWeight: 600, textDecoration: "none" }}>
           MAIA
         </a>{" "}
-        (the Marshall Artificial Intelligence Association). Located at ACC 215, the BBH connects
-        students with faculty mentors to build tools that solve real problems for the USC community.
+        (the Marshall Artificial Intelligence Association).
       </p>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 20, marginTop: 48 }}>
         {[
-          { icon: "⚙️", title: "Build", desc: "Create AI agents and tools in a controlled sandbox environment" },
-          { icon: "🧪", title: "Test", desc: "Safe synthetic models for experimentation without risk" },
-          { icon: "🤝", title: "Collaborate", desc: "Faculty-mentored teams working on applied AI challenges" },
-          { icon: "📂", title: "Ship", desc: "Portfolio-ready projects with real-world impact" },
+          { title: "Collaborate", desc: "Work with stakeholders to identify challenges in the USC community where AI can help" },
+          { title: "Design & Build", desc: "Go beyond coding to design and implement tools that respect real-world constraints and integrate with legacy systems" },
+          { title: "Ship", desc: "Deploy portfolio-ready projects with real-world impact" },
         ].map((item, i) => (
           <div key={i} style={{ background: "rgba(153,0,0,0.04)", border: "1px solid rgba(153,0,0,0.12)", borderRadius: 10, padding: "28px 24px", transition: "border-color 0.3s, background 0.3s" }}
             onMouseEnter={(e) => { e.currentTarget.style.borderColor = "rgba(153,0,0,0.35)"; e.currentTarget.style.background = "rgba(153,0,0,0.08)"; }}
             onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(153,0,0,0.12)"; e.currentTarget.style.background = "rgba(153,0,0,0.04)"; }}>
-            <div style={{ fontSize: 24, marginBottom: 12 }}>{item.icon}</div>
             <div style={{ fontSize: 15, fontWeight: 600, color: "#1C1C1F", fontFamily: "'Space Grotesk', sans-serif", marginBottom: 8 }}>{item.title}</div>
             <div style={{ fontSize: 13, color: "#5B5B63", lineHeight: 1.6, fontFamily: "'Inter', sans-serif" }}>{item.desc}</div>
           </div>
