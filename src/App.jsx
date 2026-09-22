@@ -241,10 +241,6 @@ const HomePage = ({ setActiveTab }) => (
     </section>
 
     <section style={{ padding: "80px 24px", maxWidth: 900, margin: "0 auto" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 40 }}>
-        <div style={{ width: 40, height: 2, background: "#990000" }} />
-        <span style={{ fontSize: 11, letterSpacing: 4, color: "#990000", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}>WHAT WE DO</span>
-      </div>
       <h2 style={{ fontSize: "clamp(28px, 4vw, 44px)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, color: "#1C1C1F", lineHeight: 1.15, margin: "0 0 28px" }}>
         What is the BBH?
       </h2>
@@ -282,41 +278,24 @@ const HomePage = ({ setActiveTab }) => (
       </div>
     </section>
 
-    <section style={{ padding: "60px 24px", maxWidth: 900, margin: "0 auto" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 40 }}>
-        <div style={{ width: 40, height: 2, background: "#D4AF37" }} />
-        <span style={{ fontSize: 11, letterSpacing: 4, color: "#B8952E", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}>CURRENT PROJECT UMBRELLA</span>
-      </div>
-      <div style={{ background: "linear-gradient(135deg, rgba(153,0,0,0.05) 0%, rgba(212,175,55,0.05) 100%)", border: "1px solid rgba(153,0,0,0.15)", borderRadius: 14, padding: "clamp(32px, 5vw, 56px)", position: "relative", overflow: "hidden", cursor: "pointer", transition: "border-color 0.3s" }}
-        onClick={() => setActiveTab("projects")}
-        onMouseEnter={(e) => (e.currentTarget.style.borderColor = "rgba(153,0,0,0.4)")}
-        onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(153,0,0,0.15)")}>
-        <div style={{ fontSize: 11, letterSpacing: 3, color: "#B8952E", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, marginBottom: 16 }}>3 TOOLS, ONE GOAL →</div>
-        <h3 style={{ fontSize: "clamp(22px, 3.5vw, 32px)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, color: "#1C1C1F", margin: "0 0 16px" }}>Course Registration Support</h3>
-        <p style={{ fontSize: 15, color: "#52525B", lineHeight: 1.7, fontFamily: "'Inter', sans-serif", maxWidth: 560 }}>
-          Three connected tools that help USC students plan and register for classes with more
-          confidence — validating a next-semester schedule, checking a full multi-semester degree
-          plan, and gathering anonymized data to keep testing and improving both.
-        </p>
-        <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 24, color: "#990000", fontSize: 13, fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif", letterSpacing: 1 }}>
-          VIEW ALL 3 TOOLS
-          <span style={{ fontSize: 18 }}>→</span>
-        </div>
-      </div>
-    </section>
 
     <section style={{ padding: "60px 24px 100px", maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
       <blockquote style={{ fontSize: "clamp(18px, 3vw, 26px)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 400, color: "#3F3F46", lineHeight: 1.6, margin: 0, padding: "0 20px" }}>
-        "At the USC Marshall School of Business BUAI program,{" "}
+        "In Artificial Intelligence for Business (BUAI),{" "}
         <span style={{ color: "#990000", fontWeight: 600 }}>students are actively using their skills</span>{" "}
         to improve the world around them."
       </blockquote>
+      <div style={{ marginTop: 24, fontSize: 14, color: "#52525B", fontFamily: "'Inter', sans-serif" }}>
+        <span style={{ fontWeight: 600, color: "#1C1C1F" }}>Professor Charlie Hannigan</span>
+        <br />
+        Academic Director, AI for Business (BUAI)
+      </div>
     </section>
   </div>
 );
 
 const ToolCard = ({ tool }) => (
-  <div style={{ background: "rgba(0,0,0,0.025)", border: "1px solid rgba(0,0,0,0.08)", borderRadius: 14, padding: "clamp(28px, 4vw, 44px)", marginBottom: 32 }}>
+  <div style={{ background: "#FFFFFF", border: "1px solid rgba(0,0,0,0.08)", borderRadius: 16, padding: "clamp(26px, 4vw, 40px)", height: "100%", boxSizing: "border-box", display: "flex", flexDirection: "column", boxShadow: "0 18px 40px -24px rgba(28,28,31,0.25)" }}>
     <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14, flexWrap: "wrap" }}>
       <h3 style={{ fontSize: "clamp(20px, 3vw, 26px)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, color: "#1C1C1F", margin: 0 }}>{tool.name}</h3>
       {tool.nameIsPlaceholder && (
@@ -331,15 +310,15 @@ const ToolCard = ({ tool }) => (
     <p style={{ fontSize: 13, color: "#B8952E", fontFamily: "'Inter', sans-serif", fontStyle: "italic", marginBottom: 14 }}>{tool.tagline}</p>
     <p style={{ fontSize: 14.5, color: "#52525B", lineHeight: 1.75, fontFamily: "'Inter', sans-serif", marginBottom: 24 }}>{tool.description}</p>
     {tool.link ? (
-      <a href={tool.link} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "10px 22px", background: "#990000", color: "#fff", borderRadius: 7, textDecoration: "none", fontSize: 12.5, fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif", letterSpacing: 0.5, marginBottom: 28 }}>
+      <a href={tool.link} target="_blank" rel="noopener noreferrer" style={{ alignSelf: "flex-start", display: "inline-flex", alignItems: "center", gap: 8, padding: "10px 22px", background: "#990000", color: "#fff", borderRadius: 7, textDecoration: "none", fontSize: 12.5, fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif", letterSpacing: 0.5, marginBottom: 28 }}>
         TRY IT ↗
       </a>
     ) : (
-      <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "10px 22px", background: "rgba(0,0,0,0.05)", color: "#5B5B63", borderRadius: 7, fontSize: 12.5, fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif", letterSpacing: 0.5, marginBottom: 28 }}>
+      <div style={{ alignSelf: "flex-start", display: "inline-flex", alignItems: "center", gap: 8, padding: "10px 22px", background: "rgba(0,0,0,0.05)", color: "#5B5B63", borderRadius: 7, fontSize: 12.5, fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif", letterSpacing: 0.5, marginBottom: 28 }}>
         UNDER CONSTRUCTION
       </div>
     )}
-    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, marginTop: "auto", paddingTop: 20, borderTop: "1px solid rgba(0,0,0,0.07)" }}>
       <div>
         <div style={{ fontSize: 10.5, letterSpacing: 2, color: "#5B5B63", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, marginBottom: 10 }}>ADVISORS</div>
         {ADVISORS.map((a, i) => (
@@ -367,16 +346,119 @@ const ToolCard = ({ tool }) => (
   </div>
 );
 
-const ProjectsPage = () => (
-  <div style={{ padding: "120px 24px 100px", maxWidth: 800, margin: "0 auto" }}>
-    <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 40 }}>
-      <div style={{ width: 40, height: 2, background: "#990000" }} />
-      <span style={{ fontSize: 11, letterSpacing: 4, color: "#990000", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}>COURSE REGISTRATION SUPPORT</span>
+// ─── Project carousel: centered cards, equal gaps, arrows, dots, keys ───
+const CARD_W = "min(580px, 84vw)";
+const ProjectCarousel = ({ items }) => {
+  const trackRef = useRef(null);
+  const cardRefs = useRef([]);
+  const rafRef = useRef(null);
+  const [active, setActive] = useState(0);
+
+  const goTo = (i) => {
+    const n = Math.max(0, Math.min(items.length - 1, i));
+    const track = trackRef.current;
+    const el = cardRefs.current[n];
+    if (!track || !el) return;
+    const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    track.scrollTo({ left: el.offsetLeft - (track.clientWidth - el.clientWidth) / 2, behavior: reduce ? "auto" : "smooth" });
+  };
+
+  const onScroll = () => {
+    if (rafRef.current) return;
+    rafRef.current = requestAnimationFrame(() => {
+      rafRef.current = null;
+      const track = trackRef.current;
+      if (!track) return;
+      const center = track.scrollLeft + track.clientWidth / 2;
+      let best = 0, bestD = Infinity;
+      cardRefs.current.forEach((el, i) => {
+        if (!el) return;
+        const d = Math.abs(el.offsetLeft + el.clientWidth / 2 - center);
+        if (d < bestD) { bestD = d; best = i; }
+      });
+      setActive(best);
+    });
+  };
+
+  useEffect(() => () => rafRef.current && cancelAnimationFrame(rafRef.current), []);
+
+  const arrow = (dir) => {
+    const disabled = dir < 0 ? active === 0 : active === items.length - 1;
+    return (
+      <button
+        onClick={() => goTo(active + dir)}
+        disabled={disabled}
+        aria-label={dir < 0 ? "Previous project" : "Next project"}
+        style={{ width: 44, height: 44, borderRadius: "50%", border: "1px solid rgba(0,0,0,0.14)", background: "#fff", color: "#1C1C1F", fontSize: 18, cursor: disabled ? "default" : "pointer", opacity: disabled ? 0.35 : 1, transition: "border-color 0.2s, color 0.2s, opacity 0.2s", display: "inline-flex", alignItems: "center", justifyContent: "center" }}
+        onMouseEnter={(e) => { if (!disabled) { e.currentTarget.style.borderColor = "#990000"; e.currentTarget.style.color = "#990000"; } }}
+        onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(0,0,0,0.14)"; e.currentTarget.style.color = "#1C1C1F"; }}
+      >
+        {dir < 0 ? "←" : "→"}
+      </button>
+    );
+  };
+
+  return (
+    <div
+      role="region"
+      aria-roledescription="carousel"
+      aria-label="BBH projects"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "ArrowRight") { e.preventDefault(); goTo(active + 1); }
+        if (e.key === "ArrowLeft") { e.preventDefault(); goTo(active - 1); }
+      }}
+      style={{ outline: "none" }}
+    >
+      <style>{`.bbh-track::-webkit-scrollbar{display:none}`}</style>
+      <div
+        ref={trackRef}
+        className="bbh-track"
+        onScroll={onScroll}
+        style={{ display: "flex", alignItems: "stretch", gap: 28, overflowX: "auto", scrollSnapType: "x mandatory", scrollbarWidth: "none", WebkitMaskImage: "linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%)", maskImage: "linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%)", padding: `12px calc(50% - ${CARD_W} / 2) 28px` }}
+      >
+        {items.map((tool, i) => (
+          <div
+            key={tool.id}
+            ref={(el) => (cardRefs.current[i] = el)}
+            role="group"
+            aria-roledescription="slide"
+            aria-label={`${i + 1} of ${items.length}: ${tool.name}`}
+            onClick={() => { if (i !== active) goTo(i); }}
+            style={{ flex: `0 0 ${CARD_W}`, scrollSnapAlign: "center", transition: "transform 0.4s cubic-bezier(.2,.8,.2,1), opacity 0.4s", transform: i === active ? "scale(1)" : "scale(0.95)", opacity: i === active ? 1 : 0.45, cursor: i === active ? "default" : "pointer" }}
+          >
+            <ToolCard tool={tool} />
+          </div>
+        ))}
+      </div>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 20, marginTop: 8 }}>
+        {arrow(-1)}
+        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+          {items.map((t, i) => (
+            <button
+              key={t.id}
+              onClick={() => goTo(i)}
+              aria-label={`Go to ${t.name}`}
+              aria-current={i === active}
+              style={{ width: i === active ? 26 : 8, height: 8, borderRadius: 999, border: "none", padding: 0, background: i === active ? "#990000" : "rgba(0,0,0,0.18)", cursor: "pointer", transition: "width 0.3s, background 0.3s" }}
+            />
+          ))}
+        </div>
+        {arrow(1)}
+      </div>
     </div>
-    <h2 style={{ fontSize: "clamp(28px, 4vw, 44px)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, color: "#1C1C1F", lineHeight: 1.15, margin: "0 0 48px" }}>Our Projects</h2>
-    {TOOLS.map((tool) => (
-      <ToolCard key={tool.id} tool={tool} />
-    ))}
+  );
+};
+
+const ProjectsPage = () => (
+  <div style={{ padding: "120px 0 100px" }}>
+    <div style={{ maxWidth: 800, margin: "0 auto", padding: "0 24px" }}>
+      <h2 style={{ fontSize: "clamp(28px, 4vw, 44px)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, color: "#1C1C1F", lineHeight: 1.15, margin: "0 0 12px" }}>Our Projects</h2>
+      <p style={{ fontSize: 14, color: "#5B5B63", fontFamily: "'Inter', sans-serif", margin: "0 0 32px" }}>Swipe, use the arrows, or click a card to browse.</p>
+    </div>
+    <div style={{ maxWidth: 1240, margin: "0 auto" }}>
+      <ProjectCarousel items={TOOLS} />
+    </div>
   </div>
 );
 
