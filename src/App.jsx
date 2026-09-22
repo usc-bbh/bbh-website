@@ -147,6 +147,10 @@ const TOOLS = [
       "Upload your STARS report and pick the sections you're planning to register for next semester. The validator checks for time conflicts, full sections, D-clearance requirements, and missing lab or discussion sections — catching the things that would make a WebReg registration attempt fail, before you try it.",
     status: "in_progress",
     link: null,
+    repos: [
+      { label: "App repo", url: "https://github.com/usc-bbh/next-sem-validator" },
+      { label: "Validator repo", url: "https://github.com/usc-bbh/bbh-course-reg-project/tree/main/validator" },
+    ],
     leads: [P.agastya, P.tanzil],
     contributors: [P.natalie],
     team: TOOL_BUILDERS,
@@ -160,6 +164,7 @@ const TOOLS = [
       "Takes a student's intended majors, minors, and emphases along with a plan for remaining semesters, and checks it against actual degree requirements — flagging missing required courses, unit overloads, and other issues across the full path to graduation, not just next semester.",
     status: "in_progress",
     link: null,
+    repos: [{ label: "Repo", url: "https://github.com/usc-bbh/bbh-course-reg-project" }],
     leads: [P.tanzil],
     contributors: [P.agastya, P.natalie],
     team: TOOL_BUILDERS,
@@ -173,6 +178,7 @@ const TOOLS = [
       "Upload your STARS report and the app removes your name, address, student ID, grades, and GPA, turning grades into simple pass/fail markers — entirely in your browser, nothing sent to a server. Anonymized samples help us test and improve the other BBH tools.",
     status: "live",
     link: "https://huggingface.co/spaces/buai-builder-hub/STARSRedacter",
+    repos: [{ label: "Source", url: "https://huggingface.co/spaces/buai-builder-hub/STARSRedacter/tree/main" }],
     leads: [P.natalie, P.francis],
     contributors: [P.agastya, P.tanzil],
     team: TOOL_BUILDERS,
@@ -309,15 +315,24 @@ const ToolCard = ({ tool }) => (
     </div>
     <p style={{ fontSize: 13, color: "#B8952E", fontFamily: "'Inter', sans-serif", fontStyle: "italic", marginBottom: 14 }}>{tool.tagline}</p>
     <p style={{ fontSize: 14.5, color: "#52525B", lineHeight: 1.75, fontFamily: "'Inter', sans-serif", marginBottom: 24 }}>{tool.description}</p>
+    <div style={{ display: "flex", flexWrap: "wrap", gap: 10, alignItems: "center", marginBottom: 28 }}>
     {tool.link ? (
-      <a href={tool.link} target="_blank" rel="noopener noreferrer" style={{ alignSelf: "flex-start", display: "inline-flex", alignItems: "center", gap: 8, padding: "10px 22px", background: "#990000", color: "#fff", borderRadius: 7, textDecoration: "none", fontSize: 12.5, fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif", letterSpacing: 0.5, marginBottom: 28 }}>
+      <a href={tool.link} target="_blank" rel="noopener noreferrer" style={{ alignSelf: "flex-start", display: "inline-flex", alignItems: "center", gap: 8, padding: "10px 22px", background: "#990000", color: "#fff", borderRadius: 7, textDecoration: "none", fontSize: 12.5, fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif", letterSpacing: 0.5 }}>
         TRY IT ↗
       </a>
     ) : (
-      <div style={{ alignSelf: "flex-start", display: "inline-flex", alignItems: "center", gap: 8, padding: "10px 22px", background: "rgba(0,0,0,0.05)", color: "#5B5B63", borderRadius: 7, fontSize: 12.5, fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif", letterSpacing: 0.5, marginBottom: 28 }}>
+      <div style={{ alignSelf: "flex-start", display: "inline-flex", alignItems: "center", gap: 8, padding: "10px 22px", background: "rgba(0,0,0,0.05)", color: "#5B5B63", borderRadius: 7, fontSize: 12.5, fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif", letterSpacing: 0.5 }}>
         UNDER CONSTRUCTION
       </div>
     )}
+    {(tool.repos || []).map((r) => (
+      <a key={r.url} href={r.url} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "9px 16px", border: "1px solid rgba(0,0,0,0.15)", color: "#1C1C1F", borderRadius: 7, textDecoration: "none", fontSize: 12.5, fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif", letterSpacing: 0.3, background: "#fff" }}
+        onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#990000"; e.currentTarget.style.color = "#990000"; }}
+        onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(0,0,0,0.15)"; e.currentTarget.style.color = "#1C1C1F"; }}>
+        {r.label} ↗
+      </a>
+    ))}
+    </div>
     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, marginTop: "auto", paddingTop: 20, borderTop: "1px solid rgba(0,0,0,0.07)" }}>
       <div>
         <div style={{ fontSize: 10.5, letterSpacing: 2, color: "#5B5B63", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, marginBottom: 10 }}>ADVISORS</div>
@@ -512,116 +527,47 @@ const TeamPage = () => (
   </div>
 );
 
-const BuaiPage = () => (
-  <div style={{ padding: "120px 24px 100px", maxWidth: 800, margin: "0 auto" }}>
-    <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 40 }}>
-      <div style={{ width: 40, height: 2, background: "#990000" }} />
-      <span style={{ fontSize: 11, letterSpacing: 4, color: "#990000", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}>THE PROGRAMS</span>
-    </div>
-    <h2 style={{ fontSize: "clamp(28px, 4vw, 40px)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, color: "#1C1C1F", lineHeight: 1.15, margin: "0 0 20px" }}>BUAI &amp; MAIA</h2>
-    <p style={{ fontSize: 16, color: "#52525B", lineHeight: 1.8, fontFamily: "'Inter', sans-serif", marginBottom: 40 }}>
-      The BBH draws its student builders from two USC Marshall AI communities — a formal degree program and a student organization.
-    </p>
+// Paste the Google Form link here; the "join a team" card stays hidden while this is empty.
+const JOIN_FORM_URL = "";
 
-    <div style={{ marginBottom: 48 }}>
-      <h3 style={{ fontSize: 18, fontFamily: "'Space Grotesk', sans-serif", color: "#1C1C1F", fontWeight: 600, marginBottom: 16 }}>BUAI — the degree</h3>
-      <p style={{ fontSize: 15, color: "#52525B", lineHeight: 1.8, fontFamily: "'Inter', sans-serif", marginBottom: 20 }}>
-        The Bachelor of Science in Artificial Intelligence for Business (BUAI) is a joint degree
-        offered by the USC Marshall School of Business and the USC Viterbi School of Engineering.
-        Launched in Fall 2023, it is widely recognized as the nation's first undergraduate degree
-        to combine artificial intelligence with strategic business foundations.
-      </p>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: 16, marginBottom: 8 }}>
-        {[
-          { value: "4th", label: "Year of Program" },
-          { value: "~40", label: "Students per Cohort" },
-          { value: "128", label: "Units Required" },
-          { value: "2", label: "Schools, One Degree" },
-        ].map((stat, i) => (
-          <div key={i} style={{ padding: "28px 20px", background: "rgba(153,0,0,0.04)", border: "1px solid rgba(153,0,0,0.1)", borderRadius: 10, textAlign: "center" }}>
-            <div style={{ fontSize: 28, fontWeight: 700, color: "#990000", fontFamily: "'Space Grotesk', sans-serif", marginBottom: 6 }}>{stat.value}</div>
-            <div style={{ fontSize: 11, color: "#5B5B63", fontFamily: "'Inter', sans-serif", letterSpacing: 1 }}>{stat.label.toUpperCase()}</div>
-          </div>
-        ))}
+const ContactPage = () => (
+  <div style={{ padding: "120px 24px 100px", maxWidth: 700, margin: "0 auto" }}>
+    <h2 style={{ fontSize: "clamp(28px, 4vw, 44px)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, color: "#1C1C1F", lineHeight: 1.15, margin: "0 0 32px" }}>Get Involved</h2>
+    {JOIN_FORM_URL && (
+      <div style={{ background: "linear-gradient(135deg, rgba(153,0,0,0.06) 0%, rgba(212,175,55,0.06) 100%)", border: "1px solid rgba(153,0,0,0.18)", borderRadius: 14, padding: "36px", marginBottom: 24 }}>
+        <h2 style={{ fontSize: "clamp(22px, 3.2vw, 30px)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, color: "#1C1C1F", lineHeight: 1.2, margin: "0 0 10px" }}>Interested in joining a future BBH team?</h2>
+        <p style={{ fontSize: 15, color: "#52525B", lineHeight: 1.7, fontFamily: "'Inter', sans-serif", marginBottom: 22 }}>
+          Tell us a bit about yourself and we'll reach out when the next team forms.
+        </p>
+        <a href={JOIN_FORM_URL} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "13px 28px", background: "#990000", color: "#fff", borderRadius: 8, textDecoration: "none", fontSize: 13, fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif", letterSpacing: 1 }}>
+          APPLY TO JOIN ↗
+        </a>
       </div>
-      <a href="https://www.marshall.usc.edu/programs/undergraduate-programs/undergraduate-degrees/bs-artificial-intelligence-for-business-buai" target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", marginTop: 20, color: "#990000", fontSize: 13, fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif", textDecoration: "none", letterSpacing: 1 }}>
-        LEARN MORE AT USC MARSHALL ↗
+    )}
+
+    <div style={{ background: "rgba(0,0,0,0.025)", border: "1px solid rgba(0,0,0,0.08)", borderRadius: 14, padding: "36px", marginBottom: 24 }}>
+      <h3 style={{ fontSize: 20, fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, color: "#1C1C1F", margin: "0 0 10px" }}>Contribute on GitHub</h3>
+      <p style={{ fontSize: 15, color: "#52525B", lineHeight: 1.7, fontFamily: "'Inter', sans-serif", marginBottom: 20 }}>
+        BBH believes strongly in student empowerment. All of our repos are public, so feel free to
+        add functionality and open a pull request. Each tool's repo is linked on the{" "}
+        <span style={{ color: "#990000", fontWeight: 600 }}>Projects</span> page.
+      </p>
+      <a href="https://github.com/usc-bbh" target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "11px 22px", border: "1px solid rgba(0,0,0,0.15)", background: "#fff", color: "#1C1C1F", borderRadius: 8, textDecoration: "none", fontSize: 13, fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif", letterSpacing: 0.5 }}>
+        github.com/usc-bbh ↗
       </a>
     </div>
 
-    <div style={{ marginBottom: 48 }}>
-      <h3 style={{ fontSize: 18, fontFamily: "'Space Grotesk', sans-serif", color: "#1C1C1F", fontWeight: 600, marginBottom: 16 }}>MAIA — the student org</h3>
-      <p style={{ fontSize: 15, color: "#52525B", lineHeight: 1.8, fontFamily: "'Inter', sans-serif", marginBottom: 20 }}>
-        The Marshall Artificial Intelligence Association (MAIA) is USC's first student-led AI
-        organization, focused on applying real machine learning and AI to different industries
-        through hands-on projects and company partnerships each semester — open to students beyond just BUAI majors.
+    <div style={{ background: "rgba(0,0,0,0.025)", border: "1px solid rgba(0,0,0,0.08)", borderRadius: 14, padding: "36px" }}>
+      <h3 style={{ fontSize: 20, fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, color: "#1C1C1F", margin: "0 0 10px" }}>Got feedback on one of our tools?</h3>
+      <p style={{ fontSize: 15, color: "#52525B", lineHeight: 1.7, fontFamily: "'Inter', sans-serif", marginBottom: 20 }}>
+        Feel free to raise an issue on GitHub. Bug reports, confusing results, and feature ideas all help.
       </p>
-      <a href="https://www.uscmaia.com/" target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", color: "#990000", fontSize: 13, fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif", textDecoration: "none", letterSpacing: 1 }}>
-        VISIT MAIA ↗
+      <a href="https://github.com/usc-bbh/bbh-course-reg-project/issues/new" target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "11px 22px", border: "1px solid rgba(0,0,0,0.15)", background: "#fff", color: "#1C1C1F", borderRadius: 8, textDecoration: "none", fontSize: 13, fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif", letterSpacing: 0.5 }}>
+        Open an issue ↗
       </a>
-    </div>
-
-    <div style={{ marginBottom: 56 }}>
-      <h3 style={{ fontSize: 18, fontFamily: "'Space Grotesk', sans-serif", color: "#1C1C1F", fontWeight: 600, marginBottom: 24 }}>Program Pillars</h3>
-      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-        {[
-          { title: "Integrated Curriculum", desc: "Courses from both Marshall and Viterbi — blending business strategy with AI/ML, NLP, computer vision, and ethics." },
-          { title: "Industry Partnerships", desc: "Priority registration access and exclusive internship opportunities at companies like Google, Apple, Amazon, McKinsey, and NVIDIA." },
-          { title: "Tight-Knit Community", desc: "Small cohorts creating an intimate community with mentorship, cohorted events, and socials." },
-          { title: "Builder Culture", desc: "The BUAI Builder Hub and MAIA provide collaborative spaces for developing real AI agents, conducting research, and creating portfolio-ready projects." },
-        ].map((pillar, i) => (
-          <div key={i} style={{ padding: "24px", background: "rgba(0,0,0,0.025)", border: "1px solid rgba(0,0,0,0.06)", borderRadius: 10 }}>
-            <div style={{ fontSize: 15, fontWeight: 600, color: "#27272A", fontFamily: "'Space Grotesk', sans-serif", marginBottom: 8 }}>{pillar.title}</div>
-            <div style={{ fontSize: 14, color: "#52525B", lineHeight: 1.7, fontFamily: "'Inter', sans-serif" }}>{pillar.desc}</div>
-          </div>
-        ))}
-      </div>
     </div>
   </div>
 );
-
-const ContactPage = () => {
-  const [suggestion, setSuggestion] = useState("");
-  const [email, setEmail] = useState("");
-  const [sent, setSent] = useState(false);
-
-  const handleSubmit = () => {
-    if (suggestion.trim()) {
-      setSent(true);
-      setTimeout(() => setSent(false), 3000);
-      setSuggestion("");
-      setEmail("");
-    }
-  };
-
-  return (
-    <div style={{ padding: "120px 24px 100px", maxWidth: 700, margin: "0 auto" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 40 }}>
-        <div style={{ width: 40, height: 2, background: "#990000" }} />
-        <span style={{ fontSize: 11, letterSpacing: 4, color: "#990000", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}>GET IN TOUCH</span>
-      </div>
-      <h2 style={{ fontSize: "clamp(28px, 4vw, 40px)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, color: "#1C1C1F", lineHeight: 1.15, margin: "0 0 12px" }}>What should we build next?</h2>
-      <p style={{ fontSize: 16, color: "#52525B", lineHeight: 1.8, fontFamily: "'Inter', sans-serif", marginBottom: 48 }}>
-        Have an idea for an AI project? A problem you wish someone would solve? We want to hear from you.
-      </p>
-      <div style={{ background: "rgba(0,0,0,0.025)", border: "1px solid rgba(0,0,0,0.08)", borderRadius: 14, padding: "36px", marginBottom: 40 }}>
-        <label style={{ display: "block", fontSize: 12, letterSpacing: 2, color: "#52525B", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, marginBottom: 10 }}>YOUR EMAIL (OPTIONAL)</label>
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@usc.edu"
-          style={{ width: "100%", padding: "14px 16px", background: "#FFFFFF", border: "1px solid rgba(0,0,0,0.15)", borderRadius: 8, color: "#27272A", fontSize: 14, fontFamily: "'Inter', sans-serif", outline: "none", marginBottom: 20, boxSizing: "border-box" }} />
-        <label style={{ display: "block", fontSize: 12, letterSpacing: 2, color: "#52525B", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, marginBottom: 10 }}>YOUR IDEA</label>
-        <textarea value={suggestion} onChange={(e) => setSuggestion(e.target.value)} placeholder="Describe the AI project or problem you'd like us to tackle..." rows={5}
-          style={{ width: "100%", padding: "14px 16px", background: "#FFFFFF", border: "1px solid rgba(0,0,0,0.15)", borderRadius: 8, color: "#27272A", fontSize: 14, fontFamily: "'Inter', sans-serif", outline: "none", resize: "vertical", lineHeight: 1.6, marginBottom: 20, boxSizing: "border-box" }} />
-        <button onClick={handleSubmit} style={{ padding: "14px 32px", background: suggestion.trim() ? "#990000" : "rgba(153,0,0,0.3)", color: "#fff", border: "none", borderRadius: 8, fontSize: 13, fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif", letterSpacing: 1, cursor: suggestion.trim() ? "pointer" : "default", transition: "background 0.2s" }}>
-          {sent ? "✓ SENT!" : "SUBMIT IDEA"}
-        </button>
-      </div>
-      <div style={{ textAlign: "center" }}>
-        <p style={{ fontSize: 13, color: "#5B5B63", fontFamily: "'Inter', sans-serif", marginBottom: 12 }}>Or reach us directly:</p>
-        <a href="mailto:bbh@usc.edu" style={{ color: "#990000", fontSize: 18, fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, textDecoration: "none", letterSpacing: 1 }}>bbh@usc.edu</a>
-      </div>
-    </div>
-  );
-};
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("home");
@@ -646,8 +592,7 @@ export default function App() {
     { id: "home", label: "Home" },
     { id: "projects", label: "Projects" },
     { id: "team", label: "Team" },
-    { id: "buai", label: "BUAI & MAIA" },
-    { id: "contact", label: "Contact" },
+    { id: "contact", label: "Get Involved" },
   ];
 
   return (
@@ -663,8 +608,7 @@ export default function App() {
 
       <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, padding: "0 24px", height: 64, display: "flex", alignItems: "center", justifyContent: "space-between", background: scrolled ? "rgba(255,255,255,0.92)" : "transparent", backdropFilter: scrolled ? "blur(16px)" : "none", borderBottom: scrolled ? "1px solid rgba(0,0,0,0.06)" : "1px solid transparent", transition: "background 0.3s, border-color 0.3s, backdrop-filter 0.3s" }}>
         <div onClick={() => setActiveTab("home")} style={{ cursor: "pointer", display: "flex", alignItems: "center", gap: 10 }}>
-          <div style={{ width: 30, height: 30, borderRadius: 6, background: "linear-gradient(135deg, #990000, #600000)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 700, color: "#fff", fontFamily: "'Space Grotesk', sans-serif" }}>B</div>
-          <span style={{ fontSize: 14, fontWeight: 700, fontFamily: "'Space Grotesk', sans-serif", color: "#1C1C1F", letterSpacing: 1.5 }}>BBH</span>
+          <span style={{ fontSize: 16, fontWeight: 700, fontFamily: "'Space Grotesk', sans-serif", color: "#1C1C1F", letterSpacing: 1.5 }}>BBH</span>
         </div>
         <div style={{ display: "flex", gap: 4 }} className="desktop-nav">
           {tabs.map((tab) => (
@@ -691,7 +635,6 @@ export default function App() {
       {activeTab === "home" && <HomePage setActiveTab={setActiveTab} />}
       {activeTab === "projects" && <ProjectsPage />}
       {activeTab === "team" && <TeamPage />}
-      {activeTab === "buai" && <BuaiPage />}
       {activeTab === "contact" && <ContactPage />}
 
       <footer style={{ borderTop: "1px solid rgba(0,0,0,0.06)", padding: "40px 24px", textAlign: "center" }}>
@@ -700,8 +643,6 @@ export default function App() {
           <br />
           USC Marshall School of Business × Viterbi School of Engineering
           <br />
-          <a href="mailto:bbh@usc.edu" style={{ color: "#5B5B63", textDecoration: "none" }}>bbh@usc.edu</a>
-          {" · "}
           <a href="https://www.marshall.usc.edu/programs/undergraduate-programs/undergraduate-degrees/bs-artificial-intelligence-for-business-buai" target="_blank" rel="noopener noreferrer" style={{ color: "#5B5B63", textDecoration: "none" }}>BUAI ↗</a>
           {" · "}
           <a href="https://www.uscmaia.com/" target="_blank" rel="noopener noreferrer" style={{ color: "#5B5B63", textDecoration: "none" }}>MAIA ↗</a>
