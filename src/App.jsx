@@ -117,11 +117,24 @@ const ADVISORS = [
 // Abhi removed from public team listing per request.
 // Photos: none yet — falls back to initials avatar. Add a `photo` field
 // (path under public/team/) per person once headshots are available.
-const STUDENT_BUILDERS = [
+const P = {
+  agastya: { name: "Agastya Bassi", linkedin: "https://www.linkedin.com/in/agastya-bassi/", photo: null },
+  tanzil: { name: "Tanzil Hussain", linkedin: "https://www.linkedin.com/in/tanzilhussain/", photo: null },
+  francis: { name: "Francis Ruan", linkedin: "https://www.linkedin.com/in/francisruan/", photo: null },
+  natalie: { name: "Natalie Lam Johnson", linkedin: "https://www.linkedin.com/in/natalie-lam-johnson/", photo: null },
+};
+
+const TOOL_BUILDERS = [
   { name: "Agastya Bassi", linkedin: "https://www.linkedin.com/in/agastya-bassi/", photo: null },
   { name: "Tanzil Hussain", linkedin: "https://www.linkedin.com/in/tanzilhussain/", photo: null },
   { name: "Francis Ruan", linkedin: "https://www.linkedin.com/in/francisruan/", photo: null },
   { name: "Natalie Lam Johnson", linkedin: "https://www.linkedin.com/in/natalie-lam-johnson/", photo: null },
+];
+
+// Everyone shown on the Team page. Tool cards on the Projects page use TOOL_BUILDERS.
+const STUDENT_BUILDERS = [
+  ...TOOL_BUILDERS,
+  { name: "Avi Chopra", linkedin: "https://www.linkedin.com/in/avichopra/", photo: null },
 ];
 
 const TOOLS = [
@@ -132,9 +145,11 @@ const TOOLS = [
     tagline: "Check your planned schedule before you register",
     description:
       "Upload your STARS report and pick the sections you're planning to register for next semester. The validator checks for time conflicts, full sections, D-clearance requirements, and missing lab or discussion sections — catching the things that would make a WebReg registration attempt fail, before you try it.",
-    status: "live",
-    link: "https://usc-bbh.github.io/next-sem-validator/",
-    team: STUDENT_BUILDERS,
+    status: "in_progress",
+    link: null,
+    leads: [P.agastya, P.tanzil],
+    contributors: [P.natalie],
+    team: TOOL_BUILDERS,
   },
   {
     id: "degree-plan-validator",
@@ -145,7 +160,9 @@ const TOOLS = [
       "Takes a student's intended majors, minors, and emphases along with a plan for remaining semesters, and checks it against actual degree requirements — flagging missing required courses, unit overloads, and other issues across the full path to graduation, not just next semester.",
     status: "in_progress",
     link: null,
-    team: STUDENT_BUILDERS,
+    leads: [P.tanzil],
+    contributors: [P.agastya, P.natalie],
+    team: TOOL_BUILDERS,
   },
   {
     id: "stars-collection-tool",
@@ -156,7 +173,9 @@ const TOOLS = [
       "Upload your STARS report and the app removes your name, address, student ID, grades, and GPA, turning grades into simple pass/fail markers — entirely in your browser, nothing sent to a server. Anonymized samples help us test and improve the other BBH tools.",
     status: "live",
     link: "https://huggingface.co/spaces/buai-builder-hub/STARSRedacter",
-    team: STUDENT_BUILDERS,
+    leads: [P.natalie, P.francis],
+    contributors: [P.agastya, P.tanzil],
+    team: TOOL_BUILDERS,
   },
 ];
 
@@ -231,9 +250,9 @@ const HomePage = ({ setActiveTab }) => (
       </h2>
       <p style={{ fontSize: 16, color: "#52525B", lineHeight: 1.8, fontFamily: "'Inter', sans-serif", maxWidth: 680 }}>
         The BUAI Builder Hub (BBH) builds AI tools that improve the USC community. Our projects
-        complement classroom learning with hands-on, portfolio-ready experience, and every team
-        works alongside faculty mentors. BBH draws its students from two undergraduate AI
-        communities at USC Marshall:{" "}
+        complement classroom learning with hands-on experience, helping students build a
+        professional portfolio of AI tools. BBH draws its students from two undergraduate AI
+        communities at USC Marshall,{" "}
         <a href="https://www.marshall.usc.edu/programs/undergraduate-programs/undergraduate-degrees/bs-artificial-intelligence-for-business-buai" target="_blank" rel="noopener noreferrer" style={{ color: "#990000", fontWeight: 600, textDecoration: "none" }}>
           BUAI
         </a>{" "}
@@ -241,12 +260,16 @@ const HomePage = ({ setActiveTab }) => (
         <a href="https://www.uscmaia.com/" target="_blank" rel="noopener noreferrer" style={{ color: "#990000", fontWeight: 600, textDecoration: "none" }}>
           MAIA
         </a>{" "}
-        (the Marshall Artificial Intelligence Association).
+        (the Marshall Artificial Intelligence Association), with faculty mentors from the{" "}
+        <a href="https://www.marshall.usc.edu/departments/data-sciences-and-operations" target="_blank" rel="noopener noreferrer" style={{ color: "#990000", fontWeight: 600, textDecoration: "none" }}>
+          Data Sciences and Operations (DSO)
+        </a>{" "}
+        department.
       </p>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 20, marginTop: 48 }}>
         {[
-          { title: "Collaborate", desc: "Work with stakeholders to identify challenges in the USC community where AI can help" },
-          { title: "Design & Build", desc: "Go beyond coding to design and implement tools that respect real-world constraints and integrate with legacy systems" },
+          { title: "Collaborate", desc: "Work with stakeholders to identify challenges in the USC community" },
+          { title: "Design & Build", desc: "Go beyond coding to design tools that respect real-world constraints: privacy, fairness, and user experience" },
           { title: "Ship", desc: "Deploy portfolio-ready projects with real-world impact" },
         ].map((item, i) => (
           <div key={i} style={{ background: "rgba(153,0,0,0.04)", border: "1px solid rgba(153,0,0,0.12)", borderRadius: 10, padding: "28px 24px", transition: "border-color 0.3s, background 0.3s" }}
@@ -288,9 +311,6 @@ const HomePage = ({ setActiveTab }) => (
         <span style={{ color: "#990000", fontWeight: 600 }}>students are actively using their skills</span>{" "}
         to improve the world around them."
       </blockquote>
-      <div style={{ marginTop: 24, fontSize: 12, color: "#5B5B63", fontFamily: "'Inter', sans-serif", letterSpacing: 1 }}>
-        MARSHALL SCHOOL OF BUSINESS × VITERBI SCHOOL OF ENGINEERING
-      </div>
     </section>
   </div>
 );
@@ -327,13 +347,20 @@ const ToolCard = ({ tool }) => (
         ))}
       </div>
       <div>
-        <div style={{ fontSize: 10.5, letterSpacing: 2, color: "#5B5B63", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, marginBottom: 10 }}>TEAM</div>
-        {tool.team.map((person, i) => (
-          person.linkedin ? (
-            <a key={i} href={person.linkedin} target="_blank" rel="noopener noreferrer" style={{ display: "block", fontSize: 13, color: "#3F3F46", fontFamily: "'Inter', sans-serif", textDecoration: "none", marginBottom: 4 }}>{person.name}</a>
-          ) : (
-            <div key={i} style={{ fontSize: 13, color: "#3F3F46", fontFamily: "'Inter', sans-serif", marginBottom: 4 }}>{person.name}</div>
-          )
+        {(tool.leads
+          ? [[tool.leads.length > 1 ? "LEAD DEVELOPERS" : "LEAD DEVELOPER", tool.leads], [(tool.contributors || []).length > 1 ? "CONTRIBUTING DEVELOPERS" : "CONTRIBUTING DEVELOPER", tool.contributors || []]]
+          : [["TEAM", tool.team]]
+        ).filter(([, people]) => people.length).map(([label, people], g) => (
+          <div key={g} style={{ marginBottom: 16 }}>
+            <div style={{ fontSize: 10.5, letterSpacing: 2, color: "#5B5B63", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, marginBottom: 10 }}>{label}</div>
+            {people.map((person, i) => (
+              person.linkedin ? (
+                <a key={i} href={person.linkedin} target="_blank" rel="noopener noreferrer" style={{ display: "block", fontSize: 13, color: "#3F3F46", fontFamily: "'Inter', sans-serif", textDecoration: "none", marginBottom: 4 }}>{person.name}</a>
+              ) : (
+                <div key={i} style={{ fontSize: 13, color: "#3F3F46", fontFamily: "'Inter', sans-serif", marginBottom: 4 }}>{person.name}</div>
+              )
+            ))}
+          </div>
         ))}
       </div>
     </div>
@@ -346,10 +373,7 @@ const ProjectsPage = () => (
       <div style={{ width: 40, height: 2, background: "#990000" }} />
       <span style={{ fontSize: 11, letterSpacing: 4, color: "#990000", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}>COURSE REGISTRATION SUPPORT</span>
     </div>
-    <h2 style={{ fontSize: "clamp(28px, 4vw, 44px)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, color: "#1C1C1F", lineHeight: 1.15, margin: "0 0 20px" }}>Our Projects</h2>
-    <p style={{ fontSize: 16, color: "#52525B", lineHeight: 1.8, fontFamily: "'Inter', sans-serif", marginBottom: 48 }}>
-      Three tools, built by the same team, working together to make USC course registration and degree planning less painful.
-    </p>
+    <h2 style={{ fontSize: "clamp(28px, 4vw, 44px)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, color: "#1C1C1F", lineHeight: 1.15, margin: "0 0 48px" }}>Our Projects</h2>
     {TOOLS.map((tool) => (
       <ToolCard key={tool.id} tool={tool} />
     ))}
@@ -358,15 +382,10 @@ const ProjectsPage = () => (
 
 const TeamPage = () => (
   <div style={{ padding: "120px 24px 100px", maxWidth: 800, margin: "0 auto" }}>
-    <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 40 }}>
-      <div style={{ width: 40, height: 2, background: "#990000" }} />
-      <span style={{ fontSize: 11, letterSpacing: 4, color: "#990000", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}>OUR TEAM</span>
-    </div>
-    <h2 style={{ fontSize: "clamp(28px, 4vw, 40px)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, color: "#1C1C1F", lineHeight: 1.15, margin: "0 0 16px" }}>The People Behind the Hub</h2>
+    <h2 style={{ fontSize: "clamp(28px, 4vw, 40px)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, color: "#1C1C1F", lineHeight: 1.15, margin: "0 0 16px" }}>The People Behind BBH</h2>
     <p style={{ fontSize: 16, color: "#52525B", lineHeight: 1.8, fontFamily: "'Inter', sans-serif", marginBottom: 24 }}>
-      Faculty and students collaborating at the intersection of AI, business, and education. Every
-      person below works across all 3 Course Registration Support tools — see the{" "}
-      <span style={{ color: "#990000" }}>Projects</span> page for per-tool details.
+      Faculty and students collaborating at the intersection of AI, business, and education. See the{" "}
+      <span style={{ color: "#990000" }}>Projects</span> page for the lead developers on each tool.
     </p>
 
     <div style={{ marginBottom: 56 }}>
