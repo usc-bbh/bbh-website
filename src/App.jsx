@@ -5,26 +5,22 @@ import { useState, useEffect, useRef } from "react";
 // Hero gear animation removed per Vishal's feedback — replaced with a
 // simpler, cleaner layout (neural lines + particles kept, no spinning gears).
 
-// ─── Magnetic dot grid — dots ripple away from the cursor, spring back ───
-const MagneticDotGrid = () => {
+// ─── Neural network field — layered nodes, signals firing left to right,
+// nodes near the cursor light up and fire. Faded behind the hero text. ───
+const NeuralNetField = () => {
   const canvasRef = useRef(null);
   const mouseRef = useRef({ x: -9999, y: -9999 });
-  const dotsRef = useRef([]);
   const rafRef = useRef(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
-    let width, height, dpr;
+    const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let width, height, dpr, nodes, layers, edges, outgoing, pulses, lastSpawn = 0;
 
-    const SPACING = 34;
-    const RADIUS = 1.6;
-    const REPEL_DIST = 90;
-    const REPEL_STRENGTH = 26;
-    const SPRING = 0.12;
-    const DAMPING = 0.82;
+    const rand = (a, b) => a + Math.random() * (b - a);
 
-    const buildGrid = () => {
+    const build = () => {
       const parent = canvas.parentElement;
       width = parent.clientWidth;
       height = parent.clientHeight;
@@ -35,53 +31,123 @@ const MagneticDotGrid = () => {
       canvas.style.height = `${height}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      const dots = [];
-      const cols = Math.ceil(width / SPACING) + 1;
-      const rows = Math.ceil(height / SPACING) + 1;
-      for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < cols; c++) {
-          const ox = c * SPACING;
-          const oy = r * SPACING;
-          dots.push({ ox, oy, x: ox, y: oy, vx: 0, vy: 0, gold: (r * cols + c) % 5 === 0 });
+      const L = Math.max(4, Math.min(9, Math.round(width / 170)));
+      const padX = Math.max(28, width * 0.05);
+      nodes = []; layers = []; edges = []; outgoing = []; pulses = [];
+      for (let i = 0; i < L; i++) {
+        const mid = 1 - Math.abs(i - (L - 1) / 2) / ((L - 1) / 2 || 1);
+        const count = Math.round(rand(4, 5) + mid * rand(1, 3));
+        const x = padX + (i * (width - padX * 2)) / (L - 1);
+        const top = height * 0.12, span = height * 0.76;
+        const layer = [];
+        for (let j = 0; j < count; j++) {
+          const y = top + ((j + 0.5) * span) / count + rand(-10, 10);
+          const n = { x, y, ox: x + rand(-14, 14), oy: y, act: 0, phase: rand(0, Math.PI * 2), layer: i };
+          layer.push(nodes.length);
+          nodes.push(n);
+          outgoing.push([]);
         }
+        layers.push(layer);
       }
-      dotsRef.current = dots;
+      for (let i = 0; i < L - 1; i++) {
+        layers[i].forEach((a) => {
+          let made = 0;
+          layers[i + 1].forEach((b) => {
+            if (Math.random() < 0.45) { outgoing[a].push(edges.length); edges.push({ a, b, w: rand(0.25, 1) }); made++; }
+          });
+          if (!made) {
+            const b = layers[i + 1][Math.floor(Math.random() * layers[i + 1].length)];
+            outgoing[a].push(edges.length); edges.push({ a, b, w: rand(0.25, 1) });
+          }
+        });
+      }
     };
 
-    const step = () => {
+    const fire = (nodeIdx, gold) => {
+      const outs = outgoing[nodeIdx];
+      if (!outs.length || pulses.length > 70) return;
+      const k = 1 + (Math.random() < 0.35 ? 1 : 0);
+      for (let i = 0; i < k; i++) {
+        const e = outs[Math.floor(Math.random() * outs.length)];
+        pulses.push({ e, t: 0, speed: rand(0.008, 0.016), gold: gold ?? Math.random() < 0.3 });
+      }
+    };
+
+    const draw = (time) => {
       const { x: mx, y: my } = mouseRef.current;
-      const dots = dotsRef.current;
       ctx.clearRect(0, 0, width, height);
 
-      for (let i = 0; i < dots.length; i++) {
-        const d = dots[i];
-        const dx = d.x - mx;
-        const dy = d.y - my;
-        const dist = Math.hypot(dx, dy);
-
-        if (dist < REPEL_DIST) {
-          const force = (1 - dist / REPEL_DIST) * REPEL_STRENGTH;
-          const angle = Math.atan2(dy, dx);
-          d.vx += Math.cos(angle) * force * 0.06;
-          d.vy += Math.sin(angle) * force * 0.06;
+      // node positions: gentle drift + cursor influence
+      nodes.forEach((n) => {
+        n.x = n.ox + (reduce ? 0 : Math.sin(time * 0.0005 + n.phase) * 4);
+        n.y = n.oy + (reduce ? 0 : Math.cos(time * 0.0004 + n.phase) * 5);
+        const d = Math.hypot(n.x - mx, n.y - my);
+        if (d < 160) {
+          n.act = Math.max(n.act, 1 - d / 160);
+          if (!reduce && Math.random() < 0.02) fire(nodes.indexOf(n), true);
         }
+      });
 
-        d.vx += (d.ox - d.x) * SPRING;
-        d.vy += (d.oy - d.y) * SPRING;
-        d.vx *= DAMPING;
-        d.vy *= DAMPING;
-        d.x += d.vx;
-        d.y += d.vy;
-
-        const displacement = Math.hypot(d.x - d.ox, d.y - d.oy);
-        const alpha = Math.min(0.45, 0.1 + displacement * 0.012);
-
+      // edges
+      edges.forEach((e) => {
+        const A = nodes[e.a], B = nodes[e.b];
+        const lit = Math.max(A.act, B.act);
         ctx.beginPath();
-        ctx.arc(d.x, d.y, RADIUS + Math.min(1.2, displacement * 0.03), 0, Math.PI * 2);
-        ctx.fillStyle = d.gold ? `rgba(212,175,55,${alpha})` : `rgba(153,0,0,${alpha})`;
-        ctx.fill();
+        ctx.moveTo(A.x, A.y);
+        ctx.lineTo(B.x, B.y);
+        ctx.strokeStyle = `rgba(153,0,0,${0.05 + 0.07 * e.w + lit * 0.25})`;
+        ctx.lineWidth = 1 + lit * 0.6;
+        ctx.stroke();
+      });
+
+      // pulses
+      for (let i = pulses.length - 1; i >= 0; i--) {
+        const p = pulses[i];
+        const e = edges[p.e];
+        const A = nodes[e.a], B = nodes[e.b];
+        p.t += p.speed;
+        const t = Math.min(1, p.t);
+        const x = A.x + (B.x - A.x) * t, y = A.y + (B.y - A.y) * t;
+        const tt = Math.max(0, t - 0.12);
+        const tx = A.x + (B.x - A.x) * tt, ty = A.y + (B.y - A.y) * tt;
+        const col = p.gold ? "212,175,55" : "153,0,0";
+        const grad = ctx.createLinearGradient(tx, ty, x, y);
+        grad.addColorStop(0, `rgba(${col},0)`);
+        grad.addColorStop(1, `rgba(${col},0.75)`);
+        ctx.beginPath(); ctx.moveTo(tx, ty); ctx.lineTo(x, y);
+        ctx.strokeStyle = grad; ctx.lineWidth = 2; ctx.stroke();
+        ctx.beginPath(); ctx.arc(x, y, 2.4, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${col},0.95)`; ctx.fill();
+        if (p.t >= 1) {
+          pulses.splice(i, 1);
+          B.act = Math.min(1, B.act + 0.8);
+          if (Math.random() < 0.72) fire(e.b, p.gold);
+        }
       }
-      rafRef.current = requestAnimationFrame(step);
+
+      // nodes
+      nodes.forEach((n) => {
+        if (n.act > 0.02) {
+          ctx.beginPath(); ctx.arc(n.x, n.y, 6 + n.act * 10, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(153,0,0,${n.act * 0.1})`; ctx.fill();
+        }
+        ctx.beginPath(); ctx.arc(n.x, n.y, 3.4 + n.act * 1.8, 0, Math.PI * 2);
+        ctx.fillStyle = n.act > 0.15 ? `rgba(153,0,0,${0.35 + n.act * 0.6})` : "#FFFFFF";
+        ctx.fill();
+        ctx.lineWidth = 1.3;
+        ctx.strokeStyle = `rgba(153,0,0,${0.3 + n.act * 0.6})`;
+        ctx.stroke();
+        n.act *= 0.955;
+      });
+
+      // spawn input signals from the first layer
+      if (!reduce && time - lastSpawn > 260) {
+        lastSpawn = time;
+        const first = layers[0];
+        fire(first[Math.floor(Math.random() * first.length)]);
+      }
+
+      if (!reduce) rafRef.current = requestAnimationFrame(draw);
     };
 
     const handleMove = (e) => {
@@ -89,23 +155,24 @@ const MagneticDotGrid = () => {
       mouseRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
     };
     const handleLeave = () => { mouseRef.current = { x: -9999, y: -9999 }; };
-    const handleResize = () => buildGrid();
+    const handleResize = () => { build(); if (reduce) draw(0); };
 
-    buildGrid();
-    rafRef.current = requestAnimationFrame(step);
+    build();
+    if (reduce) draw(0); else rafRef.current = requestAnimationFrame(draw);
     window.addEventListener("mousemove", handleMove);
-    window.addEventListener("mouseleave", handleLeave);
+    document.addEventListener("mouseleave", handleLeave);
     window.addEventListener("resize", handleResize);
 
     return () => {
       cancelAnimationFrame(rafRef.current);
       window.removeEventListener("mousemove", handleMove);
-      window.removeEventListener("mouseleave", handleLeave);
+      document.removeEventListener("mouseleave", handleLeave);
       window.removeEventListener("resize", handleResize);
     };
   }, []);
 
-  return <canvas ref={canvasRef} style={{ position: "absolute", inset: 0, pointerEvents: "none" }} />;
+  const fade = "radial-gradient(ellipse 46% 42% at 50% 50%, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.5) 55%, #000 100%)";
+  return <canvas ref={canvasRef} aria-hidden="true" style={{ position: "absolute", inset: 0, pointerEvents: "none", WebkitMaskImage: fade, maskImage: fade }} />;
 };
 
 // ─── Shared data ───
@@ -213,7 +280,7 @@ const Avatar = ({ person, size = 56 }) => {
 const HomePage = ({ setActiveTab }) => (
   <div>
     <section style={{ minHeight: "80vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", position: "relative", padding: "60px 24px 80px", overflow: "hidden" }}>
-      <MagneticDotGrid />
+      <NeuralNetField />
       <div style={{ position: "relative", zIndex: 2, textAlign: "center", maxWidth: 800 }}>
         <div style={{ fontSize: 11, letterSpacing: 5, color: "#990000", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, marginBottom: 16, textTransform: "uppercase" }}>
           USC Marshall × Viterbi
@@ -527,21 +594,27 @@ const TeamPage = () => (
   </div>
 );
 
-// Paste the Google Form link here; the "join a team" card stays hidden while this is empty.
+// Paste the Google Form link here; until then the card shows "Application form coming soon".
 const JOIN_FORM_URL = "";
 
 const ContactPage = () => (
   <div style={{ padding: "120px 24px 100px", maxWidth: 700, margin: "0 auto" }}>
     <h2 style={{ fontSize: "clamp(28px, 4vw, 44px)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, color: "#1C1C1F", lineHeight: 1.15, margin: "0 0 32px" }}>Get Involved</h2>
-    {JOIN_FORM_URL && (
+    {(
       <div style={{ background: "linear-gradient(135deg, rgba(153,0,0,0.06) 0%, rgba(212,175,55,0.06) 100%)", border: "1px solid rgba(153,0,0,0.18)", borderRadius: 14, padding: "36px", marginBottom: 24 }}>
         <h2 style={{ fontSize: "clamp(22px, 3.2vw, 30px)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, color: "#1C1C1F", lineHeight: 1.2, margin: "0 0 10px" }}>Interested in joining a future BBH team?</h2>
         <p style={{ fontSize: 15, color: "#52525B", lineHeight: 1.7, fontFamily: "'Inter', sans-serif", marginBottom: 22 }}>
           Tell us a bit about yourself and we'll reach out when the next team forms.
         </p>
-        <a href={JOIN_FORM_URL} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "13px 28px", background: "#990000", color: "#fff", borderRadius: 8, textDecoration: "none", fontSize: 13, fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif", letterSpacing: 1 }}>
-          APPLY TO JOIN ↗
-        </a>
+        {JOIN_FORM_URL ? (
+          <a href={JOIN_FORM_URL} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "13px 28px", background: "#990000", color: "#fff", borderRadius: 8, textDecoration: "none", fontSize: 13, fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif", letterSpacing: 1 }}>
+            APPLY TO JOIN ↗
+          </a>
+        ) : (
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "13px 28px", background: "rgba(0,0,0,0.05)", color: "#5B5B63", borderRadius: 8, fontSize: 13, fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif", letterSpacing: 1 }}>
+            APPLICATION FORM COMING SOON
+          </div>
+        )}
       </div>
     )}
 
