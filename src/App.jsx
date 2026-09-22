@@ -38,7 +38,7 @@ const NeuralNetField = () => {
         const mid = 1 - Math.abs(i - (L - 1) / 2) / ((L - 1) / 2 || 1);
         const count = Math.round(rand(4, 5) + mid * rand(1, 3));
         const x = padX + (i * (width - padX * 2)) / (L - 1);
-        const top = height * 0.12, span = height * 0.76;
+        const top = height * 0.1, span = height * 0.86;
         const layer = [];
         for (let j = 0; j < count; j++) {
           const y = top + ((j + 0.5) * span) / count + rand(-10, 10);
@@ -279,7 +279,7 @@ const Avatar = ({ person, size = 56 }) => {
 
 const HomePage = ({ setActiveTab }) => (
   <div>
-    <section style={{ minHeight: "80vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", position: "relative", padding: "60px 24px 80px", overflow: "hidden" }}>
+    <section style={{ minHeight: "74vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", position: "relative", padding: "72px 24px 40px", overflow: "hidden" }}>
       <NeuralNetField />
       <div style={{ position: "relative", zIndex: 2, textAlign: "center", maxWidth: 800 }}>
         <div style={{ fontSize: 11, letterSpacing: 5, color: "#990000", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, marginBottom: 16, textTransform: "uppercase" }}>
@@ -313,7 +313,7 @@ const HomePage = ({ setActiveTab }) => (
       </div>
     </section>
 
-    <section style={{ padding: "80px 24px", maxWidth: 900, margin: "0 auto" }}>
+    <section style={{ padding: "24px 24px 80px", maxWidth: 900, margin: "0 auto" }}>
       <h2 style={{ fontSize: "clamp(28px, 4vw, 44px)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, color: "#1C1C1F", lineHeight: 1.15, margin: "0 0 28px" }}>
         What is the BBH?
       </h2>
