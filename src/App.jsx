@@ -186,14 +186,14 @@ const ADVISORS = [
 // (path under public/team/) per person once headshots are available.
 const P = {
   agastya: { name: "Agastya Bassi", linkedin: "https://www.linkedin.com/in/agastya-bassi/", photo: null },
-  tanzil: { name: "Tanzil Hussain", linkedin: "https://www.linkedin.com/in/tanzilhussain/", photo: null },
+  tanzil: { name: "Tanzil Hussain", linkedin: "https://www.linkedin.com/in/tanzilhussain/", photo: "team/tanzil-hussain.jpg" },
   francis: { name: "Francis Ruan", linkedin: "https://www.linkedin.com/in/francisruan/", photo: null },
   natalie: { name: "Natalie Lam Johnson", linkedin: "https://www.linkedin.com/in/natalie-lam-johnson/", photo: null },
 };
 
 const TOOL_BUILDERS = [
   { name: "Agastya Bassi", linkedin: "https://www.linkedin.com/in/agastya-bassi/", photo: null },
-  { name: "Tanzil Hussain", linkedin: "https://www.linkedin.com/in/tanzilhussain/", photo: null },
+  { name: "Tanzil Hussain", linkedin: "https://www.linkedin.com/in/tanzilhussain/", photo: "team/tanzil-hussain.jpg" },
   { name: "Francis Ruan", linkedin: "https://www.linkedin.com/in/francisruan/", photo: null },
   { name: "Natalie Lam Johnson", linkedin: "https://www.linkedin.com/in/natalie-lam-johnson/", photo: null },
 ];
