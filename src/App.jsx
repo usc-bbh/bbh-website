@@ -570,7 +570,7 @@ const TeamPage = () => (
     </div>
 
     <div>
-      <div style={{ fontSize: 12, letterSpacing: 3, color: "#B8952E", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, marginBottom: 24 }}>STUDENT BUILDERS</div>
+      <div style={{ fontSize: 12, letterSpacing: 3, color: "#B8952E", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, marginBottom: 24 }}>BUAI STUDENT BUILDERS</div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 16 }}>
         {STUDENT_BUILDERS.map((person, i) => (
           <a
@@ -586,7 +586,7 @@ const TeamPage = () => (
               <Avatar person={person} size={64} />
             </div>
             <div style={{ fontSize: 15, color: "#1C1C1F", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, marginBottom: 6 }}>{person.name}</div>
-            <div style={{ fontSize: 12, color: "#5B5B63", fontFamily: "'Inter', sans-serif" }}>BUAI Student Builder · LinkedIn ↗</div>
+            <div style={{ fontSize: 12, color: "#5B5B63", fontFamily: "'Inter', sans-serif" }}>LinkedIn ↗</div>
           </a>
         ))}
       </div>
