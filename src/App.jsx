@@ -7,7 +7,7 @@ import { useState, useEffect, useRef } from "react";
 
 // ─── Neural network field — layered nodes, signals firing left to right,
 // nodes near the cursor light up and fire. Faded behind the hero text. ───
-const NeuralNetField = () => {
+const NeuralNetField = ({ thin = false }) => {
   const canvasRef = useRef(null);
   const mouseRef = useRef({ x: -9999, y: -9999 });
   const rafRef = useRef(null);
@@ -31,12 +31,12 @@ const NeuralNetField = () => {
       canvas.style.height = `${height}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      const L = Math.max(4, Math.min(9, Math.round(width / 170)));
+      const L = Math.max(4, Math.min(thin ? 12 : 9, Math.round(width / (thin ? 130 : 170))));
       const padX = Math.max(28, width * 0.05);
       nodes = []; layers = []; edges = []; outgoing = []; pulses = [];
       for (let i = 0; i < L; i++) {
         const mid = 1 - Math.abs(i - (L - 1) / 2) / ((L - 1) / 2 || 1);
-        const count = Math.round(rand(4, 5) + mid * rand(1, 3));
+        const count = thin ? Math.round(rand(2, 3)) : Math.round(rand(4, 5) + mid * rand(1, 3));
         const x = padX + (i * (width - padX * 2)) / (L - 1);
         const top = height * 0.1, span = height * 0.86;
         const layer = [];
@@ -169,7 +169,7 @@ const NeuralNetField = () => {
       document.removeEventListener("mouseleave", handleLeave);
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [thin]);
 
   const fade = "radial-gradient(ellipse 46% 42% at 50% 50%, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.5) 55%, #000 100%)";
   return <canvas ref={canvasRef} aria-hidden="true" style={{ position: "absolute", inset: 0, pointerEvents: "none", WebkitMaskImage: fade, maskImage: fade }} />;
@@ -453,80 +453,6 @@ const ToolCard = ({ tool }) => (
   </div>
 );
 
-// ─── Orbiting ring of nodes around a title (never crosses the text) ───
-const OrbitTitle = ({ children, style }) => {
-  const wrapRef = useRef(null);
-  const canvasRef = useRef(null);
-
-  useEffect(() => {
-    const wrap = wrapRef.current, canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
-    const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const PAD_X = 46, PAD_Y = 30, N = 14;
-    let W = 0, H = 0, raf = null, base = 0;
-    const act = new Array(N).fill(0);
-    const pulses = [{ i: 0, t: 0 }, { i: Math.floor(N / 2), t: 0.5 }];
-
-    const size = () => {
-      const r = wrap.getBoundingClientRect();
-      W = r.width + PAD_X * 2; H = r.height + PAD_Y * 2;
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = W * dpr; canvas.height = H * dpr;
-      canvas.style.width = `${W}px`; canvas.style.height = `${H}px`;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    };
-
-    const pos = (k) => {
-      const a = base + (k * Math.PI * 2) / N;
-      return [W / 2 + Math.cos(a) * (W / 2 - 6), H / 2 + Math.sin(a) * (H / 2 - 6)];
-    };
-
-    const draw = () => {
-      ctx.clearRect(0, 0, W, H);
-      const pts = Array.from({ length: N }, (_, k) => pos(k));
-      for (let k = 0; k < N; k++) {
-        const [x1, y1] = pts[k], [x2, y2] = pts[(k + 1) % N];
-        ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2);
-        ctx.strokeStyle = `rgba(153,0,0,${0.12 + Math.max(act[k], act[(k + 1) % N]) * 0.35})`;
-        ctx.lineWidth = 1; ctx.stroke();
-      }
-      pulses.forEach((p, n) => {
-        const [x1, y1] = pts[p.i], [x2, y2] = pts[(p.i + 1) % N];
-        const x = x1 + (x2 - x1) * p.t, y = y1 + (y2 - y1) * p.t;
-        ctx.beginPath(); ctx.arc(x, y, 2.2, 0, Math.PI * 2);
-        ctx.fillStyle = n % 2 ? "rgba(212,175,55,0.95)" : "rgba(153,0,0,0.9)"; ctx.fill();
-      });
-      pts.forEach(([x, y], k) => {
-        if (act[k] > 0.05) { ctx.beginPath(); ctx.arc(x, y, 5 + act[k] * 4, 0, Math.PI * 2); ctx.fillStyle = `rgba(153,0,0,${act[k] * 0.12})`; ctx.fill(); }
-        ctx.beginPath(); ctx.arc(x, y, 2.6 + act[k] * 1.2, 0, Math.PI * 2);
-        ctx.fillStyle = act[k] > 0.2 ? `rgba(153,0,0,${0.4 + act[k] * 0.5})` : "#FFFFFF"; ctx.fill();
-        ctx.lineWidth = 1.1; ctx.strokeStyle = `rgba(153,0,0,${0.35 + act[k] * 0.5})`; ctx.stroke();
-      });
-    };
-
-    const step = () => {
-      base += 0.0022;
-      pulses.forEach((p) => { p.t += 0.035; if (p.t >= 1) { p.t = 0; p.i = (p.i + 1) % N; act[p.i] = 1; } });
-      for (let k = 0; k < N; k++) act[k] *= 0.93;
-      draw();
-      raf = requestAnimationFrame(step);
-    };
-
-    size();
-    const ro = new ResizeObserver(() => { size(); if (reduce) draw(); });
-    ro.observe(wrap);
-    if (reduce) draw(); else raf = requestAnimationFrame(step);
-    return () => { cancelAnimationFrame(raf); ro.disconnect(); };
-  }, []);
-
-  return (
-    <span style={{ position: "relative", display: "inline-block", margin: "30px 0 30px 34px" }}>
-      <canvas ref={canvasRef} aria-hidden="true" style={{ position: "absolute", left: -46, top: -30, pointerEvents: "none" }} />
-      <span ref={wrapRef} style={{ position: "relative", display: "inline-block", ...style }}>{children}</span>
-    </span>
-  );
-};
-
 // ─── Project carousel: centered cards, equal gaps, arrows, dots, keys ───
 const CARD_W = "min(580px, 84vw)";
 const ProjectCarousel = ({ items }) => {
@@ -632,13 +558,14 @@ const ProjectCarousel = ({ items }) => {
 };
 
 const ProjectsPage = () => (
-  <div style={{ padding: "120px 0 100px" }}>
-    <div style={{ maxWidth: 800, margin: "0 auto", padding: "0 24px" }}>
-      <h2 style={{ fontSize: "clamp(28px, 4vw, 44px)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, color: "#1C1C1F", lineHeight: 1.15, margin: "0 0 4px" }}>
-        <OrbitTitle>Our Projects</OrbitTitle>
-      </h2>
-      <p style={{ fontSize: 14, color: "#5B5B63", fontFamily: "'Inter', sans-serif", margin: "6px 0 32px 34px" }}>Swipe, use the arrows, or click a card to browse.</p>
-    </div>
+  <div style={{ paddingBottom: 100 }}>
+    <section style={{ position: "relative", overflow: "hidden", height: "clamp(130px, 15vw, 170px)", marginTop: 64, marginBottom: 28, display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <NeuralNetField thin />
+      <div style={{ position: "relative", zIndex: 2, textAlign: "center", padding: "0 24px" }}>
+        <h2 style={{ fontSize: "clamp(28px, 4vw, 44px)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, color: "#1C1C1F", lineHeight: 1.15, margin: "0 0 8px" }}>Our Projects</h2>
+        <p style={{ fontSize: 14, color: "#5B5B63", fontFamily: "'Inter', sans-serif", margin: 0 }}>Swipe, use the arrows, or click a card to browse.</p>
+      </div>
+    </section>
     <div style={{ maxWidth: 1240, margin: "0 auto" }}>
       <ProjectCarousel items={TOOLS} />
     </div>
