@@ -177,8 +177,8 @@ const NeuralNetField = ({ thin = false }) => {
 
 // ─── Shared data ───
 const ADVISORS = [
-  { name: "Prof. Adel Javanmard", url: "https://www.linkedin.com/in/adel-javanmard-6b287545/", photo: "team/adel-javanmard.jpg" },
-  { name: "Prof. Vishal Gupta", url: "https://www.linkedin.com/in/vishal-gupta-usc/", photo: "team/vishal-gupta.jpg" },
+  { name: "Prof. Adel Javanmard", url: "https://faculty.marshall.usc.edu/Adel-Javanmard/", photo: "team/adel-javanmard.jpg" },
+  { name: "Prof. Vishal Gupta", url: "https://faculty.marshall.usc.edu/Vishal-Gupta/", photo: "team/vishal-gupta.jpg" },
 ];
 
 // Abhi removed from public team listing per request.
@@ -590,7 +590,7 @@ const TeamPage = () => (
             <Avatar person={{ name: prof.name.replace("Prof. ", ""), photo: prof.photo }} size={56} />
             <div style={{ flex: 1 }}>
               <div style={{ fontSize: 16, fontWeight: 600, color: "#1C1C1F", fontFamily: "'Space Grotesk', sans-serif" }}>{prof.name}</div>
-              <div style={{ fontSize: 12, color: "#5B5B63", fontFamily: "'Inter', sans-serif", marginTop: 4 }}>USC Faculty · View LinkedIn profile ↗</div>
+              <div style={{ fontSize: 12, color: "#5B5B63", fontFamily: "'Inter', sans-serif", marginTop: 4 }}>USC Faculty · View faculty page ↗</div>
             </div>
           </a>
         ))}
