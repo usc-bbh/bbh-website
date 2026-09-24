@@ -453,6 +453,80 @@ const ToolCard = ({ tool }) => (
   </div>
 );
 
+// ─── Orbiting ring of nodes around a title (never crosses the text) ───
+const OrbitTitle = ({ children, style }) => {
+  const wrapRef = useRef(null);
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    const wrap = wrapRef.current, canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const PAD_X = 46, PAD_Y = 30, N = 14;
+    let W = 0, H = 0, raf = null, base = 0;
+    const act = new Array(N).fill(0);
+    const pulses = [{ i: 0, t: 0 }, { i: Math.floor(N / 2), t: 0.5 }];
+
+    const size = () => {
+      const r = wrap.getBoundingClientRect();
+      W = r.width + PAD_X * 2; H = r.height + PAD_Y * 2;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = W * dpr; canvas.height = H * dpr;
+      canvas.style.width = `${W}px`; canvas.style.height = `${H}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+
+    const pos = (k) => {
+      const a = base + (k * Math.PI * 2) / N;
+      return [W / 2 + Math.cos(a) * (W / 2 - 6), H / 2 + Math.sin(a) * (H / 2 - 6)];
+    };
+
+    const draw = () => {
+      ctx.clearRect(0, 0, W, H);
+      const pts = Array.from({ length: N }, (_, k) => pos(k));
+      for (let k = 0; k < N; k++) {
+        const [x1, y1] = pts[k], [x2, y2] = pts[(k + 1) % N];
+        ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2);
+        ctx.strokeStyle = `rgba(153,0,0,${0.12 + Math.max(act[k], act[(k + 1) % N]) * 0.35})`;
+        ctx.lineWidth = 1; ctx.stroke();
+      }
+      pulses.forEach((p, n) => {
+        const [x1, y1] = pts[p.i], [x2, y2] = pts[(p.i + 1) % N];
+        const x = x1 + (x2 - x1) * p.t, y = y1 + (y2 - y1) * p.t;
+        ctx.beginPath(); ctx.arc(x, y, 2.2, 0, Math.PI * 2);
+        ctx.fillStyle = n % 2 ? "rgba(212,175,55,0.95)" : "rgba(153,0,0,0.9)"; ctx.fill();
+      });
+      pts.forEach(([x, y], k) => {
+        if (act[k] > 0.05) { ctx.beginPath(); ctx.arc(x, y, 5 + act[k] * 4, 0, Math.PI * 2); ctx.fillStyle = `rgba(153,0,0,${act[k] * 0.12})`; ctx.fill(); }
+        ctx.beginPath(); ctx.arc(x, y, 2.6 + act[k] * 1.2, 0, Math.PI * 2);
+        ctx.fillStyle = act[k] > 0.2 ? `rgba(153,0,0,${0.4 + act[k] * 0.5})` : "#FFFFFF"; ctx.fill();
+        ctx.lineWidth = 1.1; ctx.strokeStyle = `rgba(153,0,0,${0.35 + act[k] * 0.5})`; ctx.stroke();
+      });
+    };
+
+    const step = () => {
+      base += 0.0022;
+      pulses.forEach((p) => { p.t += 0.035; if (p.t >= 1) { p.t = 0; p.i = (p.i + 1) % N; act[p.i] = 1; } });
+      for (let k = 0; k < N; k++) act[k] *= 0.93;
+      draw();
+      raf = requestAnimationFrame(step);
+    };
+
+    size();
+    const ro = new ResizeObserver(() => { size(); if (reduce) draw(); });
+    ro.observe(wrap);
+    if (reduce) draw(); else raf = requestAnimationFrame(step);
+    return () => { cancelAnimationFrame(raf); ro.disconnect(); };
+  }, []);
+
+  return (
+    <span style={{ position: "relative", display: "inline-block", margin: "30px 0 30px 34px" }}>
+      <canvas ref={canvasRef} aria-hidden="true" style={{ position: "absolute", left: -46, top: -30, pointerEvents: "none" }} />
+      <span ref={wrapRef} style={{ position: "relative", display: "inline-block", ...style }}>{children}</span>
+    </span>
+  );
+};
+
 // ─── Project carousel: centered cards, equal gaps, arrows, dots, keys ───
 const CARD_W = "min(580px, 84vw)";
 const ProjectCarousel = ({ items }) => {
@@ -560,8 +634,10 @@ const ProjectCarousel = ({ items }) => {
 const ProjectsPage = () => (
   <div style={{ padding: "120px 0 100px" }}>
     <div style={{ maxWidth: 800, margin: "0 auto", padding: "0 24px" }}>
-      <h2 style={{ fontSize: "clamp(28px, 4vw, 44px)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, color: "#1C1C1F", lineHeight: 1.15, margin: "0 0 12px" }}>Our Projects</h2>
-      <p style={{ fontSize: 14, color: "#5B5B63", fontFamily: "'Inter', sans-serif", margin: "0 0 32px" }}>Swipe, use the arrows, or click a card to browse.</p>
+      <h2 style={{ fontSize: "clamp(28px, 4vw, 44px)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, color: "#1C1C1F", lineHeight: 1.15, margin: "0 0 4px" }}>
+        <OrbitTitle>Our Projects</OrbitTitle>
+      </h2>
+      <p style={{ fontSize: 14, color: "#5B5B63", fontFamily: "'Inter', sans-serif", margin: "6px 0 32px 34px" }}>Swipe, use the arrows, or click a card to browse.</p>
     </div>
     <div style={{ maxWidth: 1240, margin: "0 auto" }}>
       <ProjectCarousel items={TOOLS} />
@@ -622,50 +698,74 @@ const TeamPage = () => (
 // Paste the Google Form link here; until then the card shows "Application form coming soon".
 const JOIN_FORM_URL = "";
 
-const ContactPage = () => (
-  <div style={{ padding: "120px 24px 100px", maxWidth: 700, margin: "0 auto" }}>
-    <h2 style={{ fontSize: "clamp(28px, 4vw, 44px)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, color: "#1C1C1F", lineHeight: 1.15, margin: "0 0 32px" }}>Get Involved</h2>
-    {(
-      <div style={{ background: "linear-gradient(135deg, rgba(153,0,0,0.06) 0%, rgba(212,175,55,0.06) 100%)", border: "1px solid rgba(153,0,0,0.18)", borderRadius: 14, padding: "36px", marginBottom: 24 }}>
-        <h2 style={{ fontSize: "clamp(22px, 3.2vw, 30px)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, color: "#1C1C1F", lineHeight: 1.2, margin: "0 0 10px" }}>Interested in joining a future BBH team?</h2>
-        <p style={{ fontSize: 15, color: "#52525B", lineHeight: 1.7, fontFamily: "'Inter', sans-serif", marginBottom: 22 }}>
-          Tell us a bit about yourself and we'll reach out when the next team forms.
-        </p>
-        {JOIN_FORM_URL ? (
-          <a href={JOIN_FORM_URL} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "13px 28px", background: "#990000", color: "#fff", borderRadius: 8, textDecoration: "none", fontSize: 13, fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif", letterSpacing: 1 }}>
-            APPLY TO JOIN ↗
-          </a>
-        ) : (
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "13px 28px", background: "rgba(0,0,0,0.05)", color: "#5B5B63", borderRadius: 8, fontSize: 13, fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif", letterSpacing: 1 }}>
-            APPLICATION FORM COMING SOON
+const ContactPage = () => {
+  const btn = { display: "inline-flex", alignItems: "center", gap: 8, padding: "11px 22px", borderRadius: 8, textDecoration: "none", fontSize: 13, fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif", letterSpacing: 0.5 };
+  const sideCard = (accent) => ({ background: "#FFFFFF", border: "1px solid rgba(0,0,0,0.08)", borderLeft: `4px solid ${accent}`, borderRadius: 14, padding: "30px 30px 30px 28px", display: "flex", flexDirection: "column", boxShadow: "0 14px 32px -24px rgba(28,28,31,0.35)" });
+  const outline = (e, on, color) => { e.currentTarget.style.borderColor = on ? color : "rgba(0,0,0,0.15)"; e.currentTarget.style.color = on ? color : "#1C1C1F"; };
+
+  return (
+    <div>
+      {/* Header band with a slice of the homepage network */}
+      <section style={{ position: "relative", overflow: "hidden", height: "clamp(180px, 24vw, 260px)", marginTop: 64, display: "flex", alignItems: "center", justifyContent: "center", boxSizing: "border-box", borderBottom: "1px solid rgba(153,0,0,0.08)" }}>
+        <NeuralNetField />
+        <div style={{ position: "relative", zIndex: 2, textAlign: "center", padding: "0 24px" }}>
+          <h2 style={{ fontSize: "clamp(32px, 5vw, 52px)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, color: "#1C1C1F", lineHeight: 1.1, margin: "0 0 10px" }}>
+            Get <span style={{ color: "#990000" }}>Involved</span>
+          </h2>
+          <p style={{ fontSize: 15, color: "#52525B", fontFamily: "'Inter', sans-serif", margin: 0 }}>Join a team, ship code, or tell us what to fix.</p>
+        </div>
+      </section>
+
+      <div style={{ maxWidth: 900, margin: "0 auto", padding: "40px 24px 100px" }}>
+        {/* Join: the main call to action */}
+        <div style={{ position: "relative", overflow: "hidden", background: "linear-gradient(135deg, #A30000 0%, #7A0000 100%)", borderRadius: 16, padding: "clamp(28px, 5vw, 44px)", marginBottom: 20, boxShadow: "0 24px 48px -28px rgba(153,0,0,0.7)" }}>
+          <div aria-hidden="true" style={{ position: "absolute", right: -80, top: -80, width: 260, height: 260, borderRadius: "50%", background: "radial-gradient(circle, rgba(212,175,55,0.22) 0%, rgba(212,175,55,0) 70%)" }} />
+          <div style={{ position: "relative" }}>
+            <h3 style={{ fontSize: "clamp(22px, 3.2vw, 30px)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, color: "#FFFFFF", lineHeight: 1.2, margin: "0 0 10px" }}>Interested in joining a future BBH team?</h3>
+            <p style={{ fontSize: 15, color: "rgba(255,255,255,0.82)", lineHeight: 1.7, fontFamily: "'Inter', sans-serif", margin: "0 0 24px", maxWidth: 520 }}>
+              Tell us a bit about yourself and we'll reach out when the next team forms.
+            </p>
+            {JOIN_FORM_URL ? (
+              <a href={JOIN_FORM_URL} target="_blank" rel="noopener noreferrer" style={{ ...btn, padding: "13px 28px", background: "#FFFFFF", color: "#990000", letterSpacing: 1 }}>
+                APPLY TO JOIN ↗
+              </a>
+            ) : (
+              <div style={{ ...btn, padding: "13px 28px", background: "rgba(255,255,255,0.14)", border: "1px solid rgba(255,255,255,0.3)", color: "#FFFFFF", letterSpacing: 1 }}>
+                APPLICATIONS OPEN SOON
+              </div>
+            )}
           </div>
-        )}
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20 }}>
+          <div style={sideCard("#990000")}>
+            <h3 style={{ fontSize: 19, fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, color: "#1C1C1F", margin: "0 0 10px" }}>Contribute on GitHub</h3>
+            <p style={{ fontSize: 14.5, color: "#52525B", lineHeight: 1.7, fontFamily: "'Inter', sans-serif", margin: "0 0 22px" }}>
+              BBH believes strongly in student empowerment. All of our repos are public, so feel free to
+              add functionality and open a pull request. Each tool's repo is linked on the{" "}
+              <span style={{ color: "#990000", fontWeight: 600 }}>Projects</span> page.
+            </p>
+            <a href="https://github.com/usc-bbh" target="_blank" rel="noopener noreferrer" style={{ ...btn, marginTop: "auto", alignSelf: "flex-start", border: "1px solid rgba(0,0,0,0.15)", background: "#fff", color: "#1C1C1F" }}
+              onMouseEnter={(e) => outline(e, true, "#990000")} onMouseLeave={(e) => outline(e, false)}>
+              github.com/usc-bbh ↗
+            </a>
+          </div>
+
+          <div style={sideCard("#D4AF37")}>
+            <h3 style={{ fontSize: 19, fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, color: "#1C1C1F", margin: "0 0 10px" }}>Got feedback on one of our tools?</h3>
+            <p style={{ fontSize: 14.5, color: "#52525B", lineHeight: 1.7, fontFamily: "'Inter', sans-serif", margin: "0 0 22px" }}>
+              Feel free to raise an issue on GitHub. Bug reports, confusing results, and feature ideas all help.
+            </p>
+            <a href="https://github.com/usc-bbh/bbh-course-reg-project/issues/new" target="_blank" rel="noopener noreferrer" style={{ ...btn, marginTop: "auto", alignSelf: "flex-start", border: "1px solid rgba(0,0,0,0.15)", background: "#fff", color: "#1C1C1F" }}
+              onMouseEnter={(e) => outline(e, true, "#B8952E")} onMouseLeave={(e) => outline(e, false)}>
+              Open an issue ↗
+            </a>
+          </div>
+        </div>
       </div>
-    )}
-
-    <div style={{ background: "rgba(0,0,0,0.025)", border: "1px solid rgba(0,0,0,0.08)", borderRadius: 14, padding: "36px", marginBottom: 24 }}>
-      <h3 style={{ fontSize: 20, fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, color: "#1C1C1F", margin: "0 0 10px" }}>Contribute on GitHub</h3>
-      <p style={{ fontSize: 15, color: "#52525B", lineHeight: 1.7, fontFamily: "'Inter', sans-serif", marginBottom: 20 }}>
-        BBH believes strongly in student empowerment. All of our repos are public, so feel free to
-        add functionality and open a pull request. Each tool's repo is linked on the{" "}
-        <span style={{ color: "#990000", fontWeight: 600 }}>Projects</span> page.
-      </p>
-      <a href="https://github.com/usc-bbh" target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "11px 22px", border: "1px solid rgba(0,0,0,0.15)", background: "#fff", color: "#1C1C1F", borderRadius: 8, textDecoration: "none", fontSize: 13, fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif", letterSpacing: 0.5 }}>
-        github.com/usc-bbh ↗
-      </a>
     </div>
-
-    <div style={{ background: "rgba(0,0,0,0.025)", border: "1px solid rgba(0,0,0,0.08)", borderRadius: 14, padding: "36px" }}>
-      <h3 style={{ fontSize: 20, fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, color: "#1C1C1F", margin: "0 0 10px" }}>Got feedback on one of our tools?</h3>
-      <p style={{ fontSize: 15, color: "#52525B", lineHeight: 1.7, fontFamily: "'Inter', sans-serif", marginBottom: 20 }}>
-        Feel free to raise an issue on GitHub. Bug reports, confusing results, and feature ideas all help.
-      </p>
-      <a href="https://github.com/usc-bbh/bbh-course-reg-project/issues/new" target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "11px 22px", border: "1px solid rgba(0,0,0,0.15)", background: "#fff", color: "#1C1C1F", borderRadius: 8, textDecoration: "none", fontSize: 13, fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif", letterSpacing: 0.5 }}>
-        Open an issue ↗
-      </a>
-    </div>
-  </div>
-);
+  );
+};
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("home");
