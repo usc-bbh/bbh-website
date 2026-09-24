@@ -207,11 +207,15 @@ const STUDENT_BUILDERS = [
 const TOOLS = [
   {
     id: "next-sem-validator",
-    name: "Next Semester Validator",
-    nameIsPlaceholder: true,
-    tagline: "Check your planned schedule before you register",
-    description:
-      "Upload your STARS report and pick the sections you're planning to register for next semester. The validator checks for time conflicts, full sections, D-clearance requirements, and missing lab or discussion sections — catching the things that would make a WebReg registration attempt fail, before you try it.",
+    name: "RegCheck",
+    nameIsPlaceholder: false,
+    tagline: "Next semester validator: check your schedule before you register",
+    image: "projects/regcheck.webp",
+    imageAlt: "RegCheck showing ACCT 370 sections on a weekly calendar with a Validate schedule button",
+    problem:
+      "You don't find out your schedule is broken until WebReg rejects it mid-registration, whether it's a time conflict, a full section, a missing D-clearance, or a lab you forgot to add. By then your spot is gone.",
+    solution:
+      "Upload your STARS report and the sections you're planning to take. RegCheck catches everything that would make registration fail, before you try.",
     status: "in_progress",
     link: null,
     repos: [
@@ -227,8 +231,11 @@ const TOOLS = [
     name: "Degree Plan Validator",
     nameIsPlaceholder: true,
     tagline: "Check a full multi-semester plan against your degree requirements",
-    description:
-      "Takes a student's intended majors, minors, and emphases along with a plan for remaining semesters, and checks it against actual degree requirements — flagging missing required courses, unit overloads, and other issues across the full path to graduation, not just next semester.",
+    image: null,
+    problem:
+      "Planning four years of courses across majors, minors, and emphases means cross-checking requirements by hand, and a missed prerequisite or overloaded semester can push back graduation.",
+    solution:
+      "Enter your programs and your plan for the remaining semesters. The tool checks the whole path against your actual degree requirements and flags missing courses, unit overloads, and gaps.",
     status: "in_progress",
     link: null,
     repos: [{ label: "Repo", url: "https://github.com/usc-bbh/bbh-course-reg-project" }],
@@ -238,11 +245,16 @@ const TOOLS = [
   },
   {
     id: "stars-collection-tool",
-    name: "STARS Collection Tool",
-    nameIsPlaceholder: true,
-    tagline: "Help us gather anonymized STARS reports to test the tools",
-    description:
-      "Upload your STARS report and the app removes your name, address, student ID, grades, and GPA, turning grades into simple pass/fail markers — entirely in your browser, nothing sent to a server. Anonymized samples help us test and improve the other BBH tools.",
+    name: "Constellation",
+    nameIsPlaceholder: false,
+    tagline: "Collects many STARS reports, anonymized, to test the other BBH tools",
+    image: "projects/constellation.webp",
+    imagePosition: "center 62%",
+    imageAlt: "Constellation's How it works page showing which fields are removed and which are kept",
+    problem:
+      "To build tools that work on real student records, we need real STARS reports, but those are full of private information.",
+    solution:
+      "Upload your report and the app strips your name, ID, address, grades, and GPA right in your browser. Nothing is sent anywhere until you choose to share the anonymized version, and each one helps us test the other BBH tools.",
     status: "live",
     link: "https://huggingface.co/spaces/buai-builder-hub/STARSRedacter",
     repos: [{ label: "Source", url: "https://huggingface.co/spaces/buai-builder-hub/STARSRedacter/tree/main" }],
@@ -381,7 +393,20 @@ const ToolCard = ({ tool }) => (
       </span>
     </div>
     <p style={{ fontSize: 13, color: "#B8952E", fontFamily: "'Inter', sans-serif", fontStyle: "italic", marginBottom: 14 }}>{tool.tagline}</p>
-    <p style={{ fontSize: 14.5, color: "#52525B", lineHeight: 1.75, fontFamily: "'Inter', sans-serif", marginBottom: 24 }}>{tool.description}</p>
+    <div style={{ aspectRatio: "16 / 10", borderRadius: 10, overflow: "hidden", border: "1px solid rgba(0,0,0,0.08)", boxShadow: "0 12px 28px -18px rgba(28,28,31,0.45)", marginBottom: 22, background: "rgba(0,0,0,0.035)" }}>
+      {tool.image ? (
+        <img src={tool.image} alt={tool.imageAlt || tool.name} loading="lazy" draggable={false} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: tool.imagePosition || "top center", display: "block" }} />
+      ) : (
+        <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12.5, letterSpacing: 1.5, color: "#8A8A93", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}>SCREENSHOT COMING SOON</div>
+      )}
+    </div>
+    {[["THE PROBLEM", tool.problem], ["OUR SOLUTION", tool.solution]].map(([label, text]) => (
+      <div key={label} style={{ marginBottom: 18 }}>
+        <div style={{ fontSize: 10.5, letterSpacing: 2, color: "#990000", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, marginBottom: 6 }}>{label}</div>
+        <p style={{ fontSize: 14.5, color: "#52525B", lineHeight: 1.7, fontFamily: "'Inter', sans-serif", margin: 0 }}>{text}</p>
+      </div>
+    ))}
+    <div style={{ height: 6 }} />
     <div style={{ display: "flex", flexWrap: "wrap", gap: 10, alignItems: "center", marginBottom: 28 }}>
     {tool.link ? (
       <a href={tool.link} target="_blank" rel="noopener noreferrer" style={{ alignSelf: "flex-start", display: "inline-flex", alignItems: "center", gap: 8, padding: "10px 22px", background: "#990000", color: "#fff", borderRadius: 7, textDecoration: "none", fontSize: 12.5, fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif", letterSpacing: 0.5 }}>
