@@ -177,31 +177,31 @@ const NeuralNetField = () => {
 
 // ─── Shared data ───
 const ADVISORS = [
-  { name: "Prof. Adel Javanmard", url: "https://www.linkedin.com/in/adel-javanmard-6b287545/" },
-  { name: "Prof. Vishal Gupta", url: "https://www.linkedin.com/in/vishal-gupta-usc/" },
+  { name: "Prof. Adel Javanmard", url: "https://www.linkedin.com/in/adel-javanmard-6b287545/", photo: "team/adel-javanmard.jpg" },
+  { name: "Prof. Vishal Gupta", url: "https://www.linkedin.com/in/vishal-gupta-usc/", photo: "team/vishal-gupta.jpg" },
 ];
 
 // Abhi removed from public team listing per request.
-// Photos: none yet — falls back to initials avatar. Add a `photo` field
+// Photos live in public/team/. Anyone without one falls back to an initials avatar. Add a `photo` field
 // (path under public/team/) per person once headshots are available.
 const P = {
-  agastya: { name: "Agastya Bassi", linkedin: "https://www.linkedin.com/in/agastya-bassi/", photo: null },
+  agastya: { name: "Agastya Bassi", linkedin: "https://www.linkedin.com/in/agastya-bassi/", photo: "team/agastya-bassi.jpg" },
   tanzil: { name: "Tanzil Hussain", linkedin: "https://www.linkedin.com/in/tanzilhussain/", photo: "team/tanzil-hussain.jpg" },
-  francis: { name: "Francis Ruan", linkedin: "https://www.linkedin.com/in/francisruan/", photo: null },
-  natalie: { name: "Natalie Lam Johnson", linkedin: "https://www.linkedin.com/in/natalie-lam-johnson/", photo: null },
+  francis: { name: "Francis Ruan", linkedin: "https://www.linkedin.com/in/francisruan/", photo: "team/francis-ruan.jpg" },
+  natalie: { name: "Natalie Lam Johnson", linkedin: "https://www.linkedin.com/in/natalie-lam-johnson/", photo: "team/natalie-lam-johnson.jpg" },
 };
 
 const TOOL_BUILDERS = [
-  { name: "Agastya Bassi", linkedin: "https://www.linkedin.com/in/agastya-bassi/", photo: null },
+  { name: "Agastya Bassi", linkedin: "https://www.linkedin.com/in/agastya-bassi/", photo: "team/agastya-bassi.jpg" },
   { name: "Tanzil Hussain", linkedin: "https://www.linkedin.com/in/tanzilhussain/", photo: "team/tanzil-hussain.jpg" },
-  { name: "Francis Ruan", linkedin: "https://www.linkedin.com/in/francisruan/", photo: null },
-  { name: "Natalie Lam Johnson", linkedin: "https://www.linkedin.com/in/natalie-lam-johnson/", photo: null },
+  { name: "Francis Ruan", linkedin: "https://www.linkedin.com/in/francisruan/", photo: "team/francis-ruan.jpg" },
+  { name: "Natalie Lam Johnson", linkedin: "https://www.linkedin.com/in/natalie-lam-johnson/", photo: "team/natalie-lam-johnson.jpg" },
 ];
 
 // Everyone shown on the Team page. Tool cards on the Projects page use TOOL_BUILDERS.
 const STUDENT_BUILDERS = [
   ...TOOL_BUILDERS,
-  { name: "Avi Chopra", linkedin: "https://www.linkedin.com/in/avichopra/", photo: null },
+  { name: "Avi Chopra", linkedin: "https://www.linkedin.com/in/avichopra/", photo: "team/avi-chopra.jpg" },
 ];
 
 const TOOLS = [
@@ -559,7 +559,7 @@ const TeamPage = () => (
           <a key={i} href={prof.url} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: 20, padding: "24px", background: "rgba(153,0,0,0.04)", border: "1px solid rgba(153,0,0,0.1)", borderRadius: 10, textDecoration: "none", transition: "border-color 0.2s, transform 0.2s" }}
             onMouseEnter={(e) => { e.currentTarget.style.borderColor = "rgba(153,0,0,0.35)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
             onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(153,0,0,0.1)"; e.currentTarget.style.transform = "translateY(0)"; }}>
-            <Avatar person={{ name: prof.name.replace("Prof. ", "") }} size={56} />
+            <Avatar person={{ name: prof.name.replace("Prof. ", ""), photo: prof.photo }} size={56} />
             <div style={{ flex: 1 }}>
               <div style={{ fontSize: 16, fontWeight: 600, color: "#1C1C1F", fontFamily: "'Space Grotesk', sans-serif" }}>{prof.name}</div>
               <div style={{ fontSize: 12, color: "#5B5B63", fontFamily: "'Inter', sans-serif", marginTop: 4 }}>USC Faculty · View LinkedIn profile ↗</div>
