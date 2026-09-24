@@ -622,8 +622,8 @@ const TeamPage = () => (
   </div>
 );
 
-// Paste the Google Form link here; until then the card shows "Application form coming soon".
-const JOIN_FORM_URL = "";
+// Interest form for future BBH teams; leave empty to show "Applications open soon" instead.
+const JOIN_FORM_URL = "https://forms.gle/VydyRB2Qtnr1eZB79";
 
 const ContactPage = () => {
   const btn = { display: "inline-flex", alignItems: "center", gap: 8, padding: "11px 22px", borderRadius: 8, textDecoration: "none", fontSize: 13, fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif", letterSpacing: 0.5 };
