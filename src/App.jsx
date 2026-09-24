@@ -654,7 +654,7 @@ const ContactPage = () => {
             </p>
             {JOIN_FORM_URL ? (
               <a href={JOIN_FORM_URL} target="_blank" rel="noopener noreferrer" style={{ ...btn, padding: "13px 28px", background: "#FFFFFF", color: "#990000", letterSpacing: 1 }}>
-                APPLY TO JOIN ↗
+                SUBMIT YOUR INTEREST ↗
               </a>
             ) : (
               <div style={{ ...btn, padding: "13px 28px", background: "rgba(255,255,255,0.14)", border: "1px solid rgba(255,255,255,0.3)", color: "#FFFFFF", letterSpacing: 1 }}>
