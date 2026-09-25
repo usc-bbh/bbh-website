@@ -186,14 +186,14 @@ const ADVISORS = [
 // (path under public/team/) per person once headshots are available.
 const P = {
   agastya: { name: "Agastya Bassi", linkedin: "https://www.linkedin.com/in/agastya-bassi/", photo: "team/agastya-bassi.jpg" },
-  tanzil: { name: "Tanzil Hussain", linkedin: "https://www.linkedin.com/in/tanzilhussain/", photo: "team/tanzil-hussain.jpg" },
+  tanzil: { name: "Tanzil Hussain", linkedin: "https://www.linkedin.com/in/tanzilhussain/" },
   francis: { name: "Francis Ruan", linkedin: "https://www.linkedin.com/in/francisruan/", photo: "team/francis-ruan.jpg" },
   natalie: { name: "Natalie Lam Johnson", linkedin: "https://www.linkedin.com/in/natalie-lam-johnson/", photo: "team/natalie-lam-johnson.jpg" },
 };
 
 const TOOL_BUILDERS = [
   { name: "Agastya Bassi", linkedin: "https://www.linkedin.com/in/agastya-bassi/", photo: "team/agastya-bassi.jpg" },
-  { name: "Tanzil Hussain", linkedin: "https://www.linkedin.com/in/tanzilhussain/", photo: "team/tanzil-hussain.jpg" },
+  { name: "Tanzil Hussain", linkedin: "https://www.linkedin.com/in/tanzilhussain/" },
   { name: "Francis Ruan", linkedin: "https://www.linkedin.com/in/francisruan/", photo: "team/francis-ruan.jpg" },
   { name: "Natalie Lam Johnson", linkedin: "https://www.linkedin.com/in/natalie-lam-johnson/", photo: "team/natalie-lam-johnson.jpg" },
 ];
@@ -584,7 +584,7 @@ const TeamPage = ({ setActiveTab }) => (
       <div style={{ fontSize: 12, letterSpacing: 3, color: "#B8952E", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, marginBottom: 24 }}>FACULTY ADVISORS</div>
       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
         {ADVISORS.map((prof, i) => (
-          <a key={i} href={prof.url} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: 24, padding: "36px 32px", background: "rgba(153,0,0,0.04)", border: "1px solid rgba(153,0,0,0.1)", borderRadius: 10, textDecoration: "none", transition: "border-color 0.2s, transform 0.2s" }}
+          <a key={i} href={prof.url} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: 24, padding: "48px 36px", background: "rgba(153,0,0,0.04)", border: "1px solid rgba(153,0,0,0.1)", borderRadius: 10, textDecoration: "none", transition: "border-color 0.2s, transform 0.2s" }}
             onMouseEnter={(e) => { e.currentTarget.style.borderColor = "rgba(153,0,0,0.35)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
             onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(153,0,0,0.1)"; e.currentTarget.style.transform = "translateY(0)"; }}>
             <Avatar person={{ name: prof.name.replace("Prof. ", ""), photo: prof.photo }} size={56} />
@@ -606,7 +606,7 @@ const TeamPage = ({ setActiveTab }) => (
             href={person.linkedin}
             target="_blank"
             rel="noopener noreferrer"
-            style={{ padding: "52px 28px", background: "rgba(0,0,0,0.025)", border: "1px solid rgba(0,0,0,0.06)", borderRadius: 10, textAlign: "center", transition: "border-color 0.2s", textDecoration: "none", display: "block" }}
+            style={{ padding: "68px 32px", background: "rgba(0,0,0,0.025)", border: "1px solid rgba(0,0,0,0.06)", borderRadius: 10, textAlign: "center", transition: "border-color 0.2s", textDecoration: "none", display: "block" }}
             onMouseEnter={(e) => (e.currentTarget.style.borderColor = "rgba(212,175,55,0.4)")}
             onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(0,0,0,0.06)")}
           >
