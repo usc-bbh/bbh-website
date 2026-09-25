@@ -243,8 +243,8 @@ const TOOLS = [
     status: "live",
     link: "https://huggingface.co/spaces/buai-builder-hub/STARSRedacter",
     repos: [{ label: "Source", url: "https://huggingface.co/spaces/buai-builder-hub/STARSRedacter/tree/main" }],
-    leads: [P.natalie, P.francis],
-    contributors: [P.agastya, P.tanzil],
+    leads: [P.tanzil],
+    contributors: [P.natalie],
     team: TOOL_BUILDERS,
   },
   {
@@ -261,24 +261,8 @@ const TOOLS = [
     status: "in_progress",
     link: null,
     repos: [{ label: "Repo", url: "https://github.com/usc-bbh/bbh-course-reg-project" }],
-    leads: [P.tanzil],
-    contributors: [P.agastya, P.natalie],
-    team: TOOL_BUILDERS,
-  },
-  {
-    id: "constellation",
-    name: "Constellation",
-    nameIsPlaceholder: false,
-    tagline: "Make sense of your STARS.",
-    summary: "Turns your STARS report into a clear, readable summary.",
-    image: null,
-    problem:
-      "A STARS report is dense and hard to read. What you've finished, what's still open, and what counts toward which requirement are buried in pages of codes and abbreviations.",
-    solution:
-      "Upload your report and Constellation turns it into a plain summary of what's done, what's in progress, and what you still need.",
-    status: "in_progress",
-    link: null,
-    repos: [],
+    leads: [P.natalie, P.francis],
+    contributors: [P.tanzil, P.agastya],
     team: TOOL_BUILDERS,
   },
 ];
