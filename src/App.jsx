@@ -239,10 +239,7 @@ const TOOLS = [
       "Upload your STARS report and the sections you're planning to take. RegCheck catches everything that would make registration fail, before you try.",
     status: "in_progress",
     link: null,
-    repos: [
-      { label: "App repo", url: "https://github.com/usc-bbh/next-sem-validator" },
-      { label: "Validator repo", url: "https://github.com/usc-bbh/bbh-course-reg-project/tree/main/validator" },
-    ],
+    repos: [{ label: "Repo", url: "https://github.com/usc-bbh/next-sem-validator" }],
     leads: [P.agastya, P.tanzil],
     contributors: [P.natalie],
     team: TOOL_BUILDERS,
