@@ -290,6 +290,13 @@ const Avatar = ({ person, size = 56 }) => {
   );
 };
 
+// Team page: photo at its normal size inside a larger ring frame.
+const RingedAvatar = ({ person, size, gap }) => (
+  <div style={{ padding: gap, borderRadius: "50%", border: "1.5px solid rgba(153,0,0,0.22)", background: "#fff", flexShrink: 0, display: "inline-flex" }}>
+    <Avatar person={person} size={size} />
+  </div>
+);
+
 const HomePage = ({ setActiveTab }) => (
   <div>
     <section style={{ minHeight: "74vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", position: "relative", padding: "72px 24px 40px", overflow: "hidden" }}>
@@ -584,10 +591,10 @@ const TeamPage = ({ setActiveTab }) => (
       <div style={{ fontSize: 12, letterSpacing: 3, color: "#B8952E", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, marginBottom: 24 }}>FACULTY ADVISORS</div>
       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
         {ADVISORS.map((prof, i) => (
-          <a key={i} href={prof.url} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: 24, padding: "48px 36px", background: "rgba(153,0,0,0.04)", border: "1px solid rgba(153,0,0,0.1)", borderRadius: 10, textDecoration: "none", transition: "border-color 0.2s, transform 0.2s" }}
+          <a key={i} href={prof.url} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: 20, padding: "24px", background: "rgba(153,0,0,0.04)", border: "1px solid rgba(153,0,0,0.1)", borderRadius: 10, textDecoration: "none", transition: "border-color 0.2s, transform 0.2s" }}
             onMouseEnter={(e) => { e.currentTarget.style.borderColor = "rgba(153,0,0,0.35)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
             onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(153,0,0,0.1)"; e.currentTarget.style.transform = "translateY(0)"; }}>
-            <Avatar person={{ name: prof.name.replace("Prof. ", ""), photo: prof.photo }} size={56} />
+            <RingedAvatar person={{ name: prof.name.replace("Prof. ", ""), photo: prof.photo }} size={56} gap={12} />
             <div style={{ flex: 1 }}>
               <div style={{ fontSize: 16, fontWeight: 600, color: "#1C1C1F", fontFamily: "'Space Grotesk', sans-serif" }}>{prof.name}</div>
               <div style={{ fontSize: 12, color: "#5B5B63", fontFamily: "'Inter', sans-serif", marginTop: 4 }}>USC Faculty · View faculty page ↗</div>
@@ -599,19 +606,19 @@ const TeamPage = ({ setActiveTab }) => (
 
     <div>
       <div style={{ fontSize: 12, letterSpacing: 3, color: "#B8952E", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, marginBottom: 24 }}>BUAI STUDENT BUILDERS</div>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 20 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 16 }}>
         {STUDENT_BUILDERS.map((person, i) => (
           <a
             key={i}
             href={person.linkedin}
             target="_blank"
             rel="noopener noreferrer"
-            style={{ padding: "68px 32px", background: "rgba(0,0,0,0.025)", border: "1px solid rgba(0,0,0,0.06)", borderRadius: 10, textAlign: "center", transition: "border-color 0.2s", textDecoration: "none", display: "block" }}
+            style={{ padding: "32px 24px", background: "rgba(0,0,0,0.025)", border: "1px solid rgba(0,0,0,0.06)", borderRadius: 10, textAlign: "center", transition: "border-color 0.2s", textDecoration: "none", display: "block" }}
             onMouseEnter={(e) => (e.currentTarget.style.borderColor = "rgba(212,175,55,0.4)")}
             onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(0,0,0,0.06)")}
           >
             <div style={{ display: "flex", justifyContent: "center", marginBottom: 16 }}>
-              <Avatar person={person} size={64} />
+              <RingedAvatar person={person} size={64} gap={14} />
             </div>
             <div style={{ fontSize: 15, color: "#1C1C1F", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, marginBottom: 6 }}>{person.name}</div>
             <div style={{ fontSize: 12, color: "#5B5B63", fontFamily: "'Inter', sans-serif" }}>LinkedIn ↗</div>
