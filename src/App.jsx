@@ -250,7 +250,8 @@ const TOOLS = [
     nameIsPlaceholder: false,
     tagline: "Chart your path. Stay on track.",
     summary: "4-year degree planner and requirement checker.",
-    image: null,
+    image: "projects/pathwise.webp",
+    imageAlt: "Pathwise four-year plan showing courses by semester, with a prerequisite warning on TAC 216",
     problem:
       "Planning four years of courses across majors, minors, and emphases means cross-checking requirements by hand, and a missed prerequisite or overloaded semester can push back graduation.",
     solution:
