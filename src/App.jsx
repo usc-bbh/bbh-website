@@ -587,7 +587,7 @@ const TeamPage = () => (
           <a key={i} href={prof.url} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: 20, padding: "24px", background: "rgba(153,0,0,0.04)", border: "1px solid rgba(153,0,0,0.1)", borderRadius: 10, textDecoration: "none", transition: "border-color 0.2s, transform 0.2s" }}
             onMouseEnter={(e) => { e.currentTarget.style.borderColor = "rgba(153,0,0,0.35)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
             onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(153,0,0,0.1)"; e.currentTarget.style.transform = "translateY(0)"; }}>
-            <Avatar person={{ name: prof.name.replace("Prof. ", ""), photo: prof.photo }} size={88} />
+            <Avatar person={{ name: prof.name.replace("Prof. ", ""), photo: prof.photo }} size={56} />
             <div style={{ flex: 1 }}>
               <div style={{ fontSize: 16, fontWeight: 600, color: "#1C1C1F", fontFamily: "'Space Grotesk', sans-serif" }}>{prof.name}</div>
               <div style={{ fontSize: 12, color: "#5B5B63", fontFamily: "'Inter', sans-serif", marginTop: 4 }}>USC Faculty · View faculty page ↗</div>
@@ -611,7 +611,7 @@ const TeamPage = () => (
             onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(0,0,0,0.06)")}
           >
             <div style={{ display: "flex", justifyContent: "center", marginBottom: 16 }}>
-              <Avatar person={person} size={112} />
+              <Avatar person={person} size={64} />
             </div>
             <div style={{ fontSize: 15, color: "#1C1C1F", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, marginBottom: 6 }}>{person.name}</div>
             <div style={{ fontSize: 12, color: "#5B5B63", fontFamily: "'Inter', sans-serif" }}>LinkedIn ↗</div>
