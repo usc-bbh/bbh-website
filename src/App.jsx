@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { trackTab } from "./analytics.js";
 
 // ─── NOTE ON THEME ───
 // Colors: USC Cardinal (#990000) + muted Gold (#D4AF37), light background.
@@ -426,12 +427,12 @@ const ToolCard = ({ tool }) => (
     <div style={{ height: 6 }} />
     <div style={{ display: "flex", flexWrap: "wrap", gap: 10, alignItems: "center", marginBottom: 28 }}>
     {tool.link && (
-      <a href={tool.link} target="_blank" rel="noopener noreferrer" style={{ alignSelf: "flex-start", display: "inline-flex", alignItems: "center", gap: 8, padding: "10px 22px", background: "#990000", color: "#fff", borderRadius: 7, textDecoration: "none", fontSize: 12.5, fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif", letterSpacing: 0.5 }}>
+      <a href={tool.link} data-track={`${tool.name}: Try it`} target="_blank" rel="noopener noreferrer" style={{ alignSelf: "flex-start", display: "inline-flex", alignItems: "center", gap: 8, padding: "10px 22px", background: "#990000", color: "#fff", borderRadius: 7, textDecoration: "none", fontSize: 12.5, fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif", letterSpacing: 0.5 }}>
         TRY IT ↗
       </a>
     )}
     {(tool.repos || []).map((r) => (
-      <a key={r.url} href={r.url} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "9px 16px", border: "1px solid rgba(0,0,0,0.15)", color: "#1C1C1F", borderRadius: 7, textDecoration: "none", fontSize: 12.5, fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif", letterSpacing: 0.3, background: "#fff" }}
+      <a key={r.url} href={r.url} data-track={`${tool.name}: ${r.label}`} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "9px 16px", border: "1px solid rgba(0,0,0,0.15)", color: "#1C1C1F", borderRadius: 7, textDecoration: "none", fontSize: 12.5, fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif", letterSpacing: 0.3, background: "#fff" }}
         onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#990000"; e.currentTarget.style.color = "#990000"; }}
         onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(0,0,0,0.15)"; e.currentTarget.style.color = "#1C1C1F"; }}>
         {r.label} ↗
@@ -671,7 +672,7 @@ const ContactPage = () => {
               Tell us a bit about yourself and we'll reach out when the next team forms.
             </p>
             {JOIN_FORM_URL ? (
-              <a href={JOIN_FORM_URL} target="_blank" rel="noopener noreferrer" style={{ ...btn, padding: "13px 28px", background: "#FFFFFF", color: "#990000", letterSpacing: 1 }}>
+              <a href={JOIN_FORM_URL} data-track="Join: interest form" target="_blank" rel="noopener noreferrer" style={{ ...btn, padding: "13px 28px", background: "#FFFFFF", color: "#990000", letterSpacing: 1 }}>
                 SUBMIT YOUR INTEREST ↗
               </a>
             ) : (
@@ -729,6 +730,7 @@ export default function App() {
   useEffect(() => {
     if (containerRef.current) containerRef.current.scrollTop = 0;
     setMenuOpen(false);
+    trackTab(activeTab);
   }, [activeTab]);
 
   const tabs = [
