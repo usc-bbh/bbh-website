@@ -290,13 +290,6 @@ const Avatar = ({ person, size = 56 }) => {
   );
 };
 
-// Team page: photo at its normal size inside a larger ring frame.
-const RingedAvatar = ({ person, size, gap }) => (
-  <div style={{ padding: gap, borderRadius: "50%", border: "1.5px solid rgba(153,0,0,0.22)", background: "#fff", flexShrink: 0, display: "inline-flex" }}>
-    <Avatar person={person} size={size} />
-  </div>
-);
-
 const HomePage = ({ setActiveTab }) => (
   <div>
     <section style={{ minHeight: "74vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", position: "relative", padding: "72px 24px 40px", overflow: "hidden" }}>
@@ -594,7 +587,7 @@ const TeamPage = ({ setActiveTab }) => (
           <a key={i} href={prof.url} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: 20, padding: "24px", background: "rgba(153,0,0,0.04)", border: "1px solid rgba(153,0,0,0.1)", borderRadius: 10, textDecoration: "none", transition: "border-color 0.2s, transform 0.2s" }}
             onMouseEnter={(e) => { e.currentTarget.style.borderColor = "rgba(153,0,0,0.35)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
             onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(153,0,0,0.1)"; e.currentTarget.style.transform = "translateY(0)"; }}>
-            <RingedAvatar person={{ name: prof.name.replace("Prof. ", ""), photo: prof.photo }} size={56} gap={12} />
+            <Avatar person={{ name: prof.name.replace("Prof. ", ""), photo: prof.photo }} size={88} />
             <div style={{ flex: 1 }}>
               <div style={{ fontSize: 16, fontWeight: 600, color: "#1C1C1F", fontFamily: "'Space Grotesk', sans-serif" }}>{prof.name}</div>
               <div style={{ fontSize: 12, color: "#5B5B63", fontFamily: "'Inter', sans-serif", marginTop: 4 }}>USC Faculty · View faculty page ↗</div>
@@ -618,7 +611,7 @@ const TeamPage = ({ setActiveTab }) => (
             onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(0,0,0,0.06)")}
           >
             <div style={{ display: "flex", justifyContent: "center", marginBottom: 16 }}>
-              <RingedAvatar person={person} size={64} gap={14} />
+              <Avatar person={person} size={112} />
             </div>
             <div style={{ fontSize: 15, color: "#1C1C1F", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, marginBottom: 6 }}>{person.name}</div>
             <div style={{ fontSize: 12, color: "#5B5B63", fontFamily: "'Inter', sans-serif" }}>LinkedIn ↗</div>
