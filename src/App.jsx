@@ -232,7 +232,7 @@ const TOOLS = [
     tagline: "Check your schedule. Cleared for launch.",
     summary: "Validate your next-semester schedule before you register.",
     image: "projects/regcheck.webp",
-    imageAlt: "RegCheck showing ACCT 370 sections on a weekly calendar with a Validate schedule button",
+    imageAlt: "RegCheck flagging a missing CSCI 104 prerequisite and an ACCT 370 D-clearance above a weekly calendar",
     problem:
       "You don't find out your schedule is broken until WebReg rejects it mid-registration, whether it's a time conflict, a full section, a missing D-clearance, or a lab you forgot to add. By then your spot is gone.",
     solution:
