@@ -330,7 +330,7 @@ const HomePage = ({ setActiveTab }) => (
       <h2 style={{ fontSize: "clamp(28px, 4vw, 44px)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, color: "#1C1C1F", lineHeight: 1.15, margin: "0 0 28px" }}>
         What is the BBH?
       </h2>
-      <p style={{ fontSize: 16, color: "#52525B", lineHeight: 1.8, fontFamily: "'Inter', sans-serif", maxWidth: 680 }}>
+      <p style={{ fontSize: 16, color: "#52525B", lineHeight: 1.8, fontFamily: "'Inter', sans-serif" }}>
         The BUAI Builder Hub (BBH) builds AI tools that improve the USC community. Our projects
         complement classroom learning with hands-on experience, helping students build a
         professional portfolio of AI tools. BBH draws its students from two undergraduate AI
