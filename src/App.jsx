@@ -206,24 +206,6 @@ const STUDENT_BUILDERS = [
 
 const TOOLS = [
   {
-    id: "pathwise",
-    name: "Pathwise",
-    nameIsPlaceholder: false,
-    tagline: "Chart your path. Stay on track.",
-    summary: "4-year degree planner and requirement checker.",
-    image: null,
-    problem:
-      "Planning four years of courses across majors, minors, and emphases means cross-checking requirements by hand, and a missed prerequisite or overloaded semester can push back graduation.",
-    solution:
-      "Enter your programs and your plan for the remaining semesters. Pathwise checks the whole path against your actual degree requirements and flags missing courses, unit overloads, and gaps.",
-    status: "in_progress",
-    link: null,
-    repos: [{ label: "Repo", url: "https://github.com/usc-bbh/bbh-course-reg-project" }],
-    leads: [P.tanzil],
-    contributors: [P.agastya, P.natalie],
-    team: TOOL_BUILDERS,
-  },
-  {
     id: "regcheck",
     name: "RegCheck",
     nameIsPlaceholder: false,
@@ -263,6 +245,24 @@ const TOOLS = [
     repos: [{ label: "Source", url: "https://huggingface.co/spaces/buai-builder-hub/STARSRedacter/tree/main" }],
     leads: [P.natalie, P.francis],
     contributors: [P.agastya, P.tanzil],
+    team: TOOL_BUILDERS,
+  },
+  {
+    id: "pathwise",
+    name: "Pathwise",
+    nameIsPlaceholder: false,
+    tagline: "Chart your path. Stay on track.",
+    summary: "4-year degree planner and requirement checker.",
+    image: null,
+    problem:
+      "Planning four years of courses across majors, minors, and emphases means cross-checking requirements by hand, and a missed prerequisite or overloaded semester can push back graduation.",
+    solution:
+      "Enter your programs and your plan for the remaining semesters. Pathwise checks the whole path against your actual degree requirements and flags missing courses, unit overloads, and gaps.",
+    status: "in_progress",
+    link: null,
+    repos: [{ label: "Repo", url: "https://github.com/usc-bbh/bbh-course-reg-project" }],
+    leads: [P.tanzil],
+    contributors: [P.agastya, P.natalie],
     team: TOOL_BUILDERS,
   },
   {
