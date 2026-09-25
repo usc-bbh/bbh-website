@@ -220,7 +220,7 @@ const TOOLS = [
       "Upload your report and the app strips your name, ID, address, grades, and GPA right in your browser. Nothing is sent anywhere until you choose to share the anonymized version, and each one helps us test the other BBH tools.",
     status: "live",
     link: "https://huggingface.co/spaces/buai-builder-hub/STARSRedacter",
-    repos: [{ label: "Source", url: "https://huggingface.co/spaces/buai-builder-hub/STARSRedacter/tree/main" }],
+    repos: [{ label: "Repo", url: "https://huggingface.co/spaces/buai-builder-hub/STARSRedacter/tree/main" }],
     leads: [P.tanzil],
     contributors: [P.natalie],
     team: TOOL_BUILDERS,
