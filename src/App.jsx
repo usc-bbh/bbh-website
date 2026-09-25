@@ -186,14 +186,14 @@ const ADVISORS = [
 // (path under public/team/) per person once headshots are available.
 const P = {
   agastya: { name: "Agastya Bassi", linkedin: "https://www.linkedin.com/in/agastya-bassi/", photo: "team/agastya-bassi.jpg" },
-  tanzil: { name: "Tanzil Hussain", linkedin: "https://www.linkedin.com/in/tanzilhussain/", photo: "team/tanzil-hussain.jpg?v=6" },
+  tanzil: { name: "Tanzil Hussain", linkedin: "https://www.linkedin.com/in/tanzilhussain/", photo: "team/tanzil-hussain.jpg?v=7" },
   francis: { name: "Francis Ruan", linkedin: "https://www.linkedin.com/in/francisruan/", photo: "team/francis-ruan.jpg" },
   natalie: { name: "Natalie Lam Johnson", linkedin: "https://www.linkedin.com/in/natalie-lam-johnson/", photo: "team/natalie-lam-johnson.jpg" },
 };
 
 const TOOL_BUILDERS = [
   { name: "Agastya Bassi", linkedin: "https://www.linkedin.com/in/agastya-bassi/", photo: "team/agastya-bassi.jpg" },
-  { name: "Tanzil Hussain", linkedin: "https://www.linkedin.com/in/tanzilhussain/", photo: "team/tanzil-hussain.jpg?v=6" },
+  { name: "Tanzil Hussain", linkedin: "https://www.linkedin.com/in/tanzilhussain/", photo: "team/tanzil-hussain.jpg?v=7" },
   { name: "Francis Ruan", linkedin: "https://www.linkedin.com/in/francisruan/", photo: "team/francis-ruan.jpg" },
   { name: "Natalie Lam Johnson", linkedin: "https://www.linkedin.com/in/natalie-lam-johnson/", photo: "team/natalie-lam-johnson.jpg" },
 ];
