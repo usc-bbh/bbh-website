@@ -572,12 +572,12 @@ const ProjectsPage = () => (
   </div>
 );
 
-const TeamPage = () => (
+const TeamPage = ({ setActiveTab }) => (
   <div style={{ padding: "120px 24px 100px", maxWidth: 800, margin: "0 auto" }}>
     <h2 style={{ fontSize: "clamp(28px, 4vw, 40px)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, color: "#1C1C1F", lineHeight: 1.15, margin: "0 0 16px" }}>The People Behind BBH</h2>
     <p style={{ fontSize: 16, color: "#52525B", lineHeight: 1.8, fontFamily: "'Inter', sans-serif", marginBottom: 24 }}>
       Faculty and students collaborating at the intersection of AI, business, and education. See the{" "}
-      <span style={{ color: "#990000" }}>Projects</span> page for the lead developers on each tool.
+      <button type="button" onClick={() => setActiveTab("projects")} style={{ background: "none", border: "none", padding: 0, font: "inherit", color: "#990000", cursor: "pointer", textDecoration: "underline", textUnderlineOffset: 3 }}>Projects</button> page for the lead developers on each tool.
     </p>
 
     <div style={{ marginBottom: 56 }}>
@@ -759,7 +759,7 @@ export default function App() {
 
       {activeTab === "home" && <HomePage setActiveTab={setActiveTab} />}
       {activeTab === "projects" && <ProjectsPage />}
-      {activeTab === "team" && <TeamPage />}
+      {activeTab === "team" && <TeamPage setActiveTab={setActiveTab} />}
       {activeTab === "contact" && <ContactPage />}
 
       <footer style={{ borderTop: "1px solid rgba(0,0,0,0.06)", padding: "40px 24px", textAlign: "center" }}>
