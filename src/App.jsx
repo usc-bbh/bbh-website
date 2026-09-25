@@ -206,10 +206,29 @@ const STUDENT_BUILDERS = [
 
 const TOOLS = [
   {
-    id: "next-sem-validator",
+    id: "pathwise",
+    name: "Pathwise",
+    nameIsPlaceholder: false,
+    tagline: "Chart your path. Stay on track.",
+    summary: "4-year degree planner and requirement checker.",
+    image: null,
+    problem:
+      "Planning four years of courses across majors, minors, and emphases means cross-checking requirements by hand, and a missed prerequisite or overloaded semester can push back graduation.",
+    solution:
+      "Enter your programs and your plan for the remaining semesters. Pathwise checks the whole path against your actual degree requirements and flags missing courses, unit overloads, and gaps.",
+    status: "in_progress",
+    link: null,
+    repos: [{ label: "Repo", url: "https://github.com/usc-bbh/bbh-course-reg-project" }],
+    leads: [P.tanzil],
+    contributors: [P.agastya, P.natalie],
+    team: TOOL_BUILDERS,
+  },
+  {
+    id: "regcheck",
     name: "RegCheck",
     nameIsPlaceholder: false,
-    tagline: "Next semester validator: check your schedule before you register",
+    tagline: "Check your schedule. Cleared for launch.",
+    summary: "Validate your next-semester schedule before you register.",
     image: "projects/regcheck.webp",
     imageAlt: "RegCheck showing ACCT 370 sections on a weekly calendar with a Validate schedule button",
     problem:
@@ -227,30 +246,14 @@ const TOOLS = [
     team: TOOL_BUILDERS,
   },
   {
-    id: "degree-plan-validator",
-    name: "Degree Plan Validator",
-    nameIsPlaceholder: true,
-    tagline: "Check a full multi-semester plan against your degree requirements",
-    image: null,
-    problem:
-      "Planning four years of courses across majors, minors, and emphases means cross-checking requirements by hand, and a missed prerequisite or overloaded semester can push back graduation.",
-    solution:
-      "Enter your programs and your plan for the remaining semesters. The tool checks the whole path against your actual degree requirements and flags missing courses, unit overloads, and gaps.",
-    status: "in_progress",
-    link: null,
-    repos: [{ label: "Repo", url: "https://github.com/usc-bbh/bbh-course-reg-project" }],
-    leads: [P.tanzil],
-    contributors: [P.agastya, P.natalie],
-    team: TOOL_BUILDERS,
-  },
-  {
-    id: "stars-collection-tool",
-    name: "Constellation",
+    id: "eclipse",
+    name: "Eclipse",
     nameIsPlaceholder: false,
-    tagline: "Collects many STARS reports, anonymized, to test the other BBH tools",
-    image: "projects/constellation.webp",
+    tagline: "Hide your name. Let your STARS shine.",
+    summary: "Anonymize your STARS report and share it to help us build better tools.",
+    image: "projects/eclipse.webp",
     imagePosition: "center 62%",
-    imageAlt: "Constellation's How it works page showing which fields are removed and which are kept",
+    imageAlt: "Eclipse's How it works page showing which fields are removed and which are kept",
     problem:
       "To build tools that work on real student records, we need real STARS reports, but those are full of private information.",
     solution:
@@ -260,6 +263,22 @@ const TOOLS = [
     repos: [{ label: "Source", url: "https://huggingface.co/spaces/buai-builder-hub/STARSRedacter/tree/main" }],
     leads: [P.natalie, P.francis],
     contributors: [P.agastya, P.tanzil],
+    team: TOOL_BUILDERS,
+  },
+  {
+    id: "constellation",
+    name: "Constellation",
+    nameIsPlaceholder: false,
+    tagline: "Make sense of your STARS.",
+    summary: "Turns your STARS report into a clear, readable summary.",
+    image: null,
+    problem:
+      "A STARS report is dense and hard to read. What you've finished, what's still open, and what counts toward which requirement are buried in pages of codes and abbreviations.",
+    solution:
+      "Upload your report and Constellation turns it into a plain summary of what's done, what's in progress, and what you still need.",
+    status: "in_progress",
+    link: null,
+    repos: [],
     team: TOOL_BUILDERS,
   },
 ];
@@ -389,15 +408,18 @@ const ToolCard = ({ tool }) => (
         </span>
       )}
       <span style={{ fontSize: 10, letterSpacing: 1, color: tool.status === "live" ? "#16A34A" : "#5B5B63", border: `1px solid ${tool.status === "live" ? "rgba(22,163,74,0.35)" : "rgba(0,0,0,0.15)"}`, borderRadius: 5, padding: "3px 8px", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}>
-        {tool.status === "live" ? "LIVE" : "UNDER CONSTRUCTION"}
+        {tool.status === "live" ? "LIVE" : "UNDER DEVELOPMENT"}
       </span>
     </div>
-    <p style={{ fontSize: 13, color: "#B8952E", fontFamily: "'Inter', sans-serif", fontStyle: "italic", marginBottom: 14 }}>{tool.tagline}</p>
+    <p style={{ fontSize: 13, color: "#B8952E", fontFamily: "'Inter', sans-serif", fontStyle: "italic", marginBottom: tool.summary ? 5 : 14 }}>{tool.tagline}</p>
+    {tool.summary && (
+      <p style={{ fontSize: 13.5, color: "#52525B", fontFamily: "'Inter', sans-serif", lineHeight: 1.6, marginTop: 0, marginBottom: 14 }}>{tool.summary}</p>
+    )}
     <div style={{ aspectRatio: "16 / 10", borderRadius: 10, overflow: "hidden", border: "1px solid rgba(0,0,0,0.08)", boxShadow: "0 12px 28px -18px rgba(28,28,31,0.45)", marginBottom: 22, background: "rgba(0,0,0,0.035)" }}>
       {tool.image ? (
         <img src={tool.image} alt={tool.imageAlt || tool.name} loading="lazy" draggable={false} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: tool.imagePosition || "top center", display: "block" }} />
       ) : (
-        <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12.5, letterSpacing: 1.5, color: "#8A8A93", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}>SCREENSHOT COMING SOON</div>
+        <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12.5, letterSpacing: 1.5, color: "#8A8A93", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}>SCREENSHOT TO COME</div>
       )}
     </div>
     {[["THE PROBLEM", tool.problem], ["OUR SOLUTION", tool.solution]].map(([label, text]) => (
@@ -414,7 +436,7 @@ const ToolCard = ({ tool }) => (
       </a>
     ) : (
       <div style={{ alignSelf: "flex-start", display: "inline-flex", alignItems: "center", gap: 8, padding: "10px 22px", background: "rgba(0,0,0,0.05)", color: "#5B5B63", borderRadius: 7, fontSize: 12.5, fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif", letterSpacing: 0.5 }}>
-        UNDER CONSTRUCTION
+        UNDER DEVELOPMENT
       </div>
     )}
     {(tool.repos || []).map((r) => (
