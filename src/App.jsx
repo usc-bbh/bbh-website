@@ -177,8 +177,12 @@ const NeuralNetField = ({ thin = false }) => {
 
 // ─── Shared data ───
 const ADVISORS = [
-  { name: "Prof. Adel Javanmard", url: "https://faculty.marshall.usc.edu/Adel-Javanmard/", photo: "team/adel-javanmard.jpg" },
-  { name: "Prof. Vishal Gupta", url: "https://faculty.marshall.usc.edu/Vishal-Gupta/", photo: "team/vishal-gupta.jpg" },
+  { name: "Prof. Vishal Gupta", url: "https://faculty.marshall.usc.edu/Vishal-Gupta/", photo: "team/vishal-gupta.jpg",
+    title: "Associate Professor",
+    affiliations: ["Data Sciences and Operations, USC Marshall", "Industrial and Systems Engineering, USC Viterbi (by courtesy)"] },
+  { name: "Prof. Adel Javanmard", url: "https://faculty.marshall.usc.edu/Adel-Javanmard/", photo: "team/adel-javanmard.jpg",
+    title: "Professor",
+    affiliations: ["Data Sciences and Operations, USC Marshall", "Computer Science, USC Viterbi (by courtesy)"] },
 ];
 
 // Abhi removed from public team listing per request.
@@ -198,10 +202,16 @@ const TOOL_BUILDERS = [
   { name: "Natalie Lam Johnson", linkedin: "https://www.linkedin.com/in/natalie-lam-johnson/", photo: "team/natalie-lam-johnson.jpg" },
 ];
 
-// Everyone shown on the Team page. Tool cards on the Projects page use TOOL_BUILDERS.
+// Degree line shown under each student on the Team page (override per person with a `program` field).
+const STUDENT_PROGRAM = "BS, Artificial Intelligence for Business (BUAI)";
+
+// Everyone shown on the Team page, alphabetical by last name. Tool cards on the Projects page use TOOL_BUILDERS.
 const STUDENT_BUILDERS = [
-  ...TOOL_BUILDERS,
+  P.agastya, // Bassi
   { name: "Avi Chopra", linkedin: "https://www.linkedin.com/in/avichopra/", photo: "team/avi-chopra.jpg" },
+  P.tanzil, // Hussain
+  P.natalie, // Lam Johnson
+  P.francis, // Ruan
 ];
 
 const TOOLS = [
@@ -260,29 +270,32 @@ const TOOLS = [
     link: null,
     repos: [{ label: "Repo", url: "https://github.com/usc-bbh/bbh-course-reg-project" }],
     leads: [P.natalie, P.francis],
-    contributors: [P.tanzil, P.agastya],
+    contributors: [P.agastya, P.tanzil],
     team: TOOL_BUILDERS,
   },
 ];
 
 // ─── Avatar: real photo if provided, else initials circle ───
-const Avatar = ({ person, size = 56 }) => {
+// `square` gives rounded-square corners; size="100%" fills the container width (kept 1:1).
+const Avatar = ({ person, size = 56, square = false }) => {
+  const fill = typeof size === "string";
+  const box = { width: size, height: fill ? "auto" : size, aspectRatio: "1 / 1", borderRadius: square ? 8 : "50%", flexShrink: 0 };
   if (person.photo) {
     return (
       <img
         src={person.photo}
         alt={person.name}
-        style={{ width: size, height: size, borderRadius: "50%", objectFit: "cover", border: "1px solid rgba(153,0,0,0.15)", flexShrink: 0 }}
+        style={{ ...box, objectFit: "cover", border: "1px solid rgba(153,0,0,0.15)", display: "block" }}
       />
     );
   }
   return (
     <div
       style={{
-        width: size, height: size, borderRadius: "50%",
+        ...box,
         background: "linear-gradient(135deg, #990000 0%, #600000 100%)",
         display: "flex", alignItems: "center", justifyContent: "center",
-        fontSize: size * 0.36, color: "#fff", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, flexShrink: 0,
+        fontSize: fill ? 48 : size * 0.36, color: "#fff", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, flexShrink: 0,
       }}
     >
       {person.name.split(" ").map((w) => w[0]).slice(0, 2).join("")}
@@ -584,13 +597,17 @@ const TeamPage = ({ setActiveTab }) => (
       <div style={{ fontSize: 12, letterSpacing: 3, color: "#B8952E", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, marginBottom: 24 }}>FACULTY ADVISORS</div>
       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
         {ADVISORS.map((prof, i) => (
-          <a key={i} href={prof.url} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: 20, padding: "24px", background: "rgba(153,0,0,0.04)", border: "1px solid rgba(153,0,0,0.1)", borderRadius: 10, textDecoration: "none", transition: "border-color 0.2s, transform 0.2s" }}
+          <a key={i} href={prof.url} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: 24, padding: "16px", background: "rgba(153,0,0,0.04)", border: "1px solid rgba(153,0,0,0.1)", borderRadius: 10, textDecoration: "none", transition: "border-color 0.2s, transform 0.2s" }}
             onMouseEnter={(e) => { e.currentTarget.style.borderColor = "rgba(153,0,0,0.35)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
             onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(153,0,0,0.1)"; e.currentTarget.style.transform = "translateY(0)"; }}>
-            <Avatar person={{ name: prof.name.replace("Prof. ", ""), photo: prof.photo }} size={88} />
+            <Avatar person={{ name: prof.name.replace("Prof. ", ""), photo: prof.photo }} size={128} />
             <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 16, fontWeight: 600, color: "#1C1C1F", fontFamily: "'Space Grotesk', sans-serif" }}>{prof.name}</div>
-              <div style={{ fontSize: 12, color: "#5B5B63", fontFamily: "'Inter', sans-serif", marginTop: 4 }}>USC Faculty · View faculty page ↗</div>
+              <div style={{ fontSize: 18, fontWeight: 600, color: "#1C1C1F", fontFamily: "'Space Grotesk', sans-serif" }}>{prof.name.replace("Prof. ", "")}</div>
+              <div style={{ fontSize: 14, color: "#3F3F46", fontFamily: "'Inter', sans-serif", marginTop: 4, fontWeight: 500 }}>{prof.title}</div>
+              {(prof.affiliations || []).map((a, j) => (
+                <div key={j} style={{ fontSize: 13, color: "#52525B", fontFamily: "'Inter', sans-serif", marginTop: 3, lineHeight: 1.45 }}>{a}</div>
+              ))}
+              <div style={{ fontSize: 12, color: "#5B5B63", fontFamily: "'Inter', sans-serif", marginTop: 10 }}>View faculty page ↗</div>
             </div>
           </a>
         ))}
@@ -606,14 +623,15 @@ const TeamPage = ({ setActiveTab }) => (
             href={person.linkedin}
             target="_blank"
             rel="noopener noreferrer"
-            style={{ padding: "32px 24px", background: "rgba(0,0,0,0.025)", border: "1px solid rgba(0,0,0,0.06)", borderRadius: 10, textAlign: "center", transition: "border-color 0.2s", textDecoration: "none", display: "block" }}
+            style={{ padding: "12px 12px 18px", background: "rgba(0,0,0,0.025)", border: "1px solid rgba(0,0,0,0.06)", borderRadius: 10, textAlign: "center", transition: "border-color 0.2s", textDecoration: "none", display: "block" }}
             onMouseEnter={(e) => (e.currentTarget.style.borderColor = "rgba(212,175,55,0.4)")}
             onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(0,0,0,0.06)")}
           >
-            <div style={{ display: "flex", justifyContent: "center", marginBottom: 16 }}>
-              <Avatar person={person} size={112} />
+            <div style={{ marginBottom: 14 }}>
+              <Avatar person={person} size="100%" />
             </div>
             <div style={{ fontSize: 15, color: "#1C1C1F", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, marginBottom: 6 }}>{person.name}</div>
+            <div style={{ fontSize: 12.5, color: "#3F3F46", fontFamily: "'Inter', sans-serif", lineHeight: 1.45, marginBottom: 8 }}>{person.program || STUDENT_PROGRAM}</div>
             <div style={{ fontSize: 12, color: "#5B5B63", fontFamily: "'Inter', sans-serif" }}>LinkedIn ↗</div>
           </a>
         ))}
