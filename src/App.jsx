@@ -206,6 +206,26 @@ const STUDENT_BUILDERS = [
 
 const TOOLS = [
   {
+    id: "eclipse",
+    name: "Eclipse",
+    nameIsPlaceholder: false,
+    tagline: "Hide your name. Let your STARS shine.",
+    summary: "Anonymize your STARS report and share it to help us build better tools.",
+    image: "projects/eclipse.webp",
+    imagePosition: "center 62%",
+    imageAlt: "Eclipse's How it works page showing which fields are removed and which are kept",
+    problem:
+      "To build tools that work on real student records, we need real STARS reports, but those are full of private information.",
+    solution:
+      "Upload your report and the app strips your name, ID, address, grades, and GPA right in your browser. Nothing is sent anywhere until you choose to share the anonymized version, and each one helps us test the other BBH tools.",
+    status: "live",
+    link: "https://huggingface.co/spaces/buai-builder-hub/STARSRedacter",
+    repos: [{ label: "Source", url: "https://huggingface.co/spaces/buai-builder-hub/STARSRedacter/tree/main" }],
+    leads: [P.tanzil],
+    contributors: [P.natalie],
+    team: TOOL_BUILDERS,
+  },
+  {
     id: "regcheck",
     name: "RegCheck",
     nameIsPlaceholder: false,
@@ -224,26 +244,6 @@ const TOOLS = [
       { label: "Validator repo", url: "https://github.com/usc-bbh/bbh-course-reg-project/tree/main/validator" },
     ],
     leads: [P.agastya, P.tanzil],
-    contributors: [P.natalie],
-    team: TOOL_BUILDERS,
-  },
-  {
-    id: "eclipse",
-    name: "Eclipse",
-    nameIsPlaceholder: false,
-    tagline: "Hide your name. Let your STARS shine.",
-    summary: "Anonymize your STARS report and share it to help us build better tools.",
-    image: "projects/eclipse.webp",
-    imagePosition: "center 62%",
-    imageAlt: "Eclipse's How it works page showing which fields are removed and which are kept",
-    problem:
-      "To build tools that work on real student records, we need real STARS reports, but those are full of private information.",
-    solution:
-      "Upload your report and the app strips your name, ID, address, grades, and GPA right in your browser. Nothing is sent anywhere until you choose to share the anonymized version, and each one helps us test the other BBH tools.",
-    status: "live",
-    link: "https://huggingface.co/spaces/buai-builder-hub/STARSRedacter",
-    repos: [{ label: "Source", url: "https://huggingface.co/spaces/buai-builder-hub/STARSRedacter/tree/main" }],
-    leads: [P.tanzil],
     contributors: [P.natalie],
     team: TOOL_BUILDERS,
   },
