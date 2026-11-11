@@ -274,6 +274,25 @@ const TOOLS = [
     contributors: [P.agastya, P.tanzil],
     team: TOOL_BUILDERS,
   },
+  {
+    id: "constellation",
+    name: "Constellation",
+    nameIsPlaceholder: false,
+    tagline: "Make sense of your STARS.",
+    summary: "Turns your STARS report into a clear, readable summary.",
+    image: "projects/constellation.webp",
+    imageAlt: "Constellation summarizing a sample Business Administration STARS report: GPA, units, and requirements left",
+    problem:
+      "A STARS report is dense and hard to read. What you've finished, what's still open, and what counts toward which requirement are buried in pages of codes and abbreviations.",
+    solution:
+      "Drop in your STARS report and Constellation turns it into one page showing what's done, what's in progress, and what you still need. The report never leaves your browser.",
+    status: "live",
+    link: "https://usc-bbh.github.io/constellation/",
+    repos: [{ label: "Repo", url: "https://github.com/usc-bbh/constellation" }],
+    leads: [P.natalie],
+    contributors: [],
+    team: TOOL_BUILDERS,
+  },
 ];
 
 // ─── Avatar: real photo if provided, else initials circle ───
